@@ -9,6 +9,7 @@ import type { AssessmentData, Demographics, ActionPlanning, SectionResponse } fr
 import { DemographicsStep } from "./DemographicsStep";
 import { SectionStep } from "./SectionStep";
 import { ActionPlanningStep } from "./ActionPlanningStep";
+import { IntroductionStep } from "./IntroductionStep";
 import { Header } from "./Header";
 import { ProgressBar } from "./ProgressBar";
 import { submitAssessment } from "@/lib/client-api";
@@ -206,7 +207,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     setHeaderVisible(showHeaderFromUrl || showHeader);
   }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const totalSteps = 1 + sections.length + 1; // demographics + each dimension + action planning
+  const totalSteps = 1 + sections.length + 1 + 1; // introduction + each dimension + demographics + action planning
 
   const goNext = useCallback(() => {
     if (state.currentStep < totalSteps - 1) {
@@ -224,6 +225,11 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
 
   const canProceed = useCallback(() => {
     if (state.currentStep === 0) {
+      // Introduction step - always allow proceeding
+      return true;
+    }
+    // Demographics step is now after all sections
+    if (state.currentStep === sections.length + 1) {
       return (
         !!state.demographics.name &&
         !!state.demographics.email &&
@@ -293,12 +299,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
 
       <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
         {state.currentStep === 0 && (
-          <DemographicsStep
-            demographics={state.demographics}
-            onChange={(field, value) =>
-              dispatch({ type: "updateDemographics", field, value })
-            }
-          />
+          <IntroductionStep />
         )}
 
         {state.currentStep > 0 && state.currentStep <= sections.length && (
@@ -316,6 +317,16 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
             }
             /* onComment prop removed */
             dimensionNumber={state.currentStep}
+          />
+        )}
+
+        {/* Demographics step now comes after all sections but before action planning */}
+        {state.currentStep === sections.length + 1 && (
+          <DemographicsStep
+            demographics={state.demographics}
+            onChange={(field, value) =>
+              dispatch({ type: "updateDemographics", field, value })
+            }
           />
         )}
 
