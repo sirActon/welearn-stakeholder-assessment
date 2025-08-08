@@ -38,7 +38,16 @@ type Action =
   | { type: "setStep"; step: number };
 
 const initialState: State = {
-  demographics: { name: "", email: "", consent: false },
+  demographics: { 
+    companySize: "", 
+    industry: "", 
+    hasStrategy: "", 
+    strategyLastReviewed: "", 
+    name: "", 
+    company: "",
+    email: "", 
+    consent: false 
+  },
   sections: {},
   actionPlanning: {},
   currentStep: 0,
@@ -207,7 +216,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     setHeaderVisible(showHeaderFromUrl || showHeader);
   }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const totalSteps = 1 + sections.length + 1 + 1; // introduction + each dimension + demographics + action planning
+  const totalSteps = 1 + sections.length + 1 + 1; // introduction + each dimension + action planning + demographics
 
   const goNext = useCallback(() => {
     if (state.currentStep < totalSteps - 1) {
@@ -228,8 +237,13 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       // Introduction step - always allow proceeding
       return true;
     }
-    // Demographics step is now after all sections
+    // Action Planning step is now after all sections
     if (state.currentStep === sections.length + 1) {
+      // Always allow proceeding from Action Planning
+      return true;
+    }
+    // Demographics step is now at the end
+    if (state.currentStep === totalSteps - 1) {
       return (
         !!state.demographics.name &&
         !!state.demographics.email &&
@@ -246,7 +260,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       );
     }
     return true;
-  }, [state]);
+  }, [state, totalSteps]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -320,21 +334,22 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
           />
         )}
 
-        {/* Demographics step now comes after all sections but before action planning */}
+        {/* Action Planning step comes after all sections and before demographics */}
         {state.currentStep === sections.length + 1 && (
-          <DemographicsStep
-            demographics={state.demographics}
-            onChange={(field, value) =>
-              dispatch({ type: "updateDemographics", field, value })
-            }
-          />
-        )}
-
-        {state.currentStep === totalSteps - 1 && (
           <ActionPlanningStep
             actionPlanning={state.actionPlanning}
             onChange={(field, value) =>
               dispatch({ type: "updateActionPlanning", field, value })
+            }
+          />
+        )}
+
+        {/* Demographics step now comes at the end */}
+        {state.currentStep === totalSteps - 1 && (
+          <DemographicsStep
+            demographics={state.demographics}
+            onChange={(field, value) =>
+              dispatch({ type: "updateDemographics", field, value })
             }
           />
         )}

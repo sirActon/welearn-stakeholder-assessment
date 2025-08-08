@@ -4,7 +4,12 @@ export interface SectionResponse {
 }
 
 export interface Demographics {
+  companySize: string;
+  industry: string;
+  hasStrategy: string;
+  strategyLastReviewed: string;
   name: string;
+  company: string;
   email: string;
   consent: boolean;
 }
