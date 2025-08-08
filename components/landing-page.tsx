@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { shouldShowHeader } from "@/lib/header-utils";
 
 interface LandingPageProps {
@@ -22,9 +23,14 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="flex justify-between items-center py-6">
               <div className="flex items-center">
-                <h1 className="text-3xl font-light text-slate-800 tracking-tight">
-                  WE<span className="text-coral-500">LEARN</span>
-                </h1>
+                <Image
+                  src="/logo.jpg"
+                  alt="WeLearn Logo"
+                  width={225}
+                  height={75}
+                  className="object-contain"
+                  priority
+                />
               </div>
               <nav className="hidden md:flex space-x-10">
                 <a
@@ -55,11 +61,11 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
       <main className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="py-24 lg:py-32 text-center">
           <div className="max-w-5xl mx-auto">
-            <div className="mb-8">
+            {/*<div className="mb-8">
               <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-coral-100 text-coral-800 mb-8">
                 ✨ Assess Your Learning Strategy Maturity
               </span>
-            </div>
+            </div>*/}
 
             <h1 className="text-6xl lg:text-7xl font-medium text-slate-900 mb-8 tracking-tight leading-tight">
               Learning Strategy
@@ -115,7 +121,7 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
 
               <Button
                 onClick={onStartAssessment}
-                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl shadow-coral-200 hover:shadow-2xl hover:shadow-coral-300 transition-all duration-300 hover:scale-105"
+                className="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl shadow-rose-200 hover:shadow-2xl hover:shadow-rose-300 transition-all duration-300 hover:scale-105"
                 size="lg"
               >
                 Start Your Assessment
