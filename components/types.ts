@@ -1,7 +1,6 @@
 // types.ts
 export interface SectionResponse {
   questions: number[]; // expected fixed length (e.g., 5)
-  comment?: string;
 }
 
 export interface Demographics {
@@ -16,6 +15,7 @@ export interface ActionPlanning {
   strategicShifts?: string;
   stakeholders?: string;
   successMetrics?: string;
+  [key: string]: string | undefined;
 }
 
 export interface AssessmentData {

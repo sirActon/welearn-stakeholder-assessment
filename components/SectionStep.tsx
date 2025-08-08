@@ -17,7 +17,6 @@ interface Props {
   sectionData?: SectionResponse;
   likertOptions: { value: number; label: string; description: string }[];
   onResponse: (questionIndex: number, value: number) => void;
-  onComment: (comment: string) => void;
   dimensionNumber: number;
 }
 
@@ -26,7 +25,6 @@ export function SectionStep({
   sectionData,
   likertOptions,
   onResponse,
-  onComment,
   dimensionNumber,
 }: Props) {
   return (
@@ -95,28 +93,7 @@ export function SectionStep({
           </div>
         ))}
 
-        <div className="pt-8 border-t border-slate-200">
-          <div className="space-y-3">
-            <Label
-              htmlFor={`comment-${section.key}`}
-              className="text-base font-semibold text-slate-800"
-            >
-              Comments (Optional)
-            </Label>
-            <p className="text-sm text-slate-600 mb-3">
-              Use this space to add context, examples, or rationale for your
-              ratings in this dimension.
-            </p>
-            <Textarea
-              id={`comment-${section.key}`}
-              value={sectionData?.comment || ""}
-              onChange={(e) => onComment(e.target.value)}
-              placeholder="Share any additional thoughts, context, or specific examples related to this dimension..."
-              rows={4}
-              className="text-base rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400 resize-none"
-            />
-          </div>
-        </div>
+        {/* Comment section removed */}
       </CardContent>
     </Card>
   );

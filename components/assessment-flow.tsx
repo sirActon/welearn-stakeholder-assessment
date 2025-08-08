@@ -1,7 +1,8 @@
 // AssessmentFlow.tsx
 "use client";
 
-import React, { useReducer, useCallback, useState } from "react";
+import React, { useReducer, useCallback, useState, useEffect } from "react";
+import { shouldShowHeader } from "@/lib/header-utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { AssessmentData, Demographics, ActionPlanning, SectionResponse } from "./types";
@@ -15,6 +16,7 @@ import { submitAssessment } from "@/lib/client-api";
 
 interface AssessmentFlowProps {
   onComplete: (data: AssessmentData) => void;
+  showHeader?: boolean; // Optional prop to control header visibility
 }
 
 type State = AssessmentData & { currentStep: number };
@@ -31,7 +33,6 @@ type Action =
       questionIndex: number;
       value: number;
     }
-  | { type: "updateSectionComment"; sectionKey: string; comment: string }
   | { type: "updateActionPlanning"; field: keyof ActionPlanning; value: string }
   | { type: "setStep"; step: number };
 
@@ -52,7 +53,6 @@ function reducer(state: State, action: Action): State {
     case "updateSectionResponse": {
       const prevSection = state.sections[action.sectionKey] || {
         questions: [],
-        comment: "",
       };
       const questions = [...(prevSection.questions || [])];
       questions[action.questionIndex] = action.value;
@@ -64,17 +64,7 @@ function reducer(state: State, action: Action): State {
         },
       };
     }
-    case "updateSectionComment":
-      return {
-        ...state,
-        sections: {
-          ...state.sections,
-          [action.sectionKey]: {
-            ...(state.sections[action.sectionKey] || { questions: [] }),
-            comment: action.comment,
-          },
-        },
-      };
+    // updateSectionComment case removed
     case "updateActionPlanning":
       return {
         ...state,
@@ -203,7 +193,18 @@ const likertOptions = [
   },
 ];
 
-export default function AssessmentFlow({ onComplete }: AssessmentFlowProps) {
+export default function AssessmentFlow({ onComplete, showHeader = false }: AssessmentFlowProps) {
+  // Check URL parameters for header visibility using shared utility
+  const [headerVisible, setHeaderVisible] = useState<boolean>(showHeader);
+  
+  // Effect to check for URL parameters on client-side
+  useEffect(() => {
+    // Use the shared header visibility utility
+    const showHeaderFromUrl = shouldShowHeader();
+    
+    // Update header visibility based on URL parameter or prop
+    setHeaderVisible(showHeaderFromUrl || showHeader);
+  }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
   const totalSteps = 1 + sections.length + 1; // demographics + each dimension + action planning
 
@@ -257,7 +258,6 @@ export default function AssessmentFlow({ onComplete }: AssessmentFlowProps) {
             key,
             {
               questions: section.questions,
-              comment: section.comment || "",
             },
           ])
         ),
@@ -286,7 +286,9 @@ export default function AssessmentFlow({ onComplete }: AssessmentFlowProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header currentStep={state.currentStep} totalSteps={totalSteps} />
+      {headerVisible && (
+        <Header currentStep={state.currentStep} totalSteps={totalSteps} />
+      )}
       <ProgressBar currentStep={state.currentStep} totalSteps={totalSteps} />
 
       <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
@@ -312,13 +314,7 @@ export default function AssessmentFlow({ onComplete }: AssessmentFlowProps) {
                 value,
               })
             }
-            onComment={(comment) =>
-              dispatch({
-                type: "updateSectionComment",
-                sectionKey: sections[state.currentStep - 1].key,
-                comment,
-              })
-            }
+            /* onComment prop removed */
             dimensionNumber={state.currentStep}
           />
         )}

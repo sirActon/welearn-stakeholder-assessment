@@ -4,9 +4,9 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "WeLearn Assessment",
-  description: "WeLearn Assessment",
-  generator: "WeLearn Assessment",
+  title: "WeLearn Scorecard",
+  description: "WeLearn Scorecard",
+  generator: "WeLearn Scorecard",
 };
 
 export default function RootLayout({

@@ -10,13 +10,6 @@ const FIELD_ID_MAPPING = {
       "fldh2hke4QzP6BZvh",
       "fldYSqbpZhsbgUeXW",
     ],
-    comments: [
-      "fldhcJEKuQGYW7zwe",
-      "fldkmWsuWjfl6K3vA",
-      "fld3XkdA51lQJASYd",
-      "fldhgU50A4U0D4PgI",
-      "fldNxSjdUYOVdbLIC",
-    ],
   },
   governance: {
     questions: [
@@ -25,13 +18,6 @@ const FIELD_ID_MAPPING = {
       "fldLY3nbcjipMncKm",
       "fldoXEf1LUSYOUqLu",
       "fldlvBEjb1HzigZsf",
-    ],
-    comments: [
-      "fld9XLQtbuCRKSMTO",
-      "fldM1FubnHPDk3lEQ",
-      "fldGWgjpIIZse6MlE",
-      "fldbtkYOIgtkwjptj",
-      "fldditqfRjrwpxXVg",
     ],
   },
   technology: {
@@ -42,13 +28,6 @@ const FIELD_ID_MAPPING = {
       "fldIstntoIuaF0Ivy",
       "fldrLFmAbG5QPZ8iJ",
     ],
-    comments: [
-      "fldjI1HJk7ymUHiDT",
-      "fldDVTw5uUFmRb877",
-      "fldiAQA9ihtIAkDkL",
-      "fldci9tXQ9cYHwyrB",
-      "fldLwk8dMXzll9rb7",
-    ],
   },
   content: {
     questions: [
@@ -57,13 +36,6 @@ const FIELD_ID_MAPPING = {
       "fldLNsMXziWGF51Em",
       "flduex9kx8Y5NI3ux",
       "fldcmcELmymzWqRe0",
-    ],
-    comments: [
-      "fldS9UqDARMRMNhfs",
-      "fld1rkgMQgruMiEUe",
-      "fldwHuDQ2VCJAlsvu",
-      "fldtQswUba8BWjD5L",
-      "fld4akZ9G8U3wMDoW",
     ],
   },
   measurement: {
@@ -74,13 +46,6 @@ const FIELD_ID_MAPPING = {
       "fldJ5bzvd3VPunhKg",
       "fldEsTyB0MrQeaVlU",
     ],
-    comments: [
-      "fld7lBWPRFyEch5yg",
-      "fld5YHic2P51aYFRz",
-      "fld9iKECmMVawk00e",
-      "fldjV01cfubxs4ZNg",
-      "fldMJvABIiPTJsrr4",
-    ],
   },
   culture: {
     questions: [
@@ -89,13 +54,6 @@ const FIELD_ID_MAPPING = {
       "fldAibk1raCWW6GR0",
       "fld3igmes4V5aGdup",
       "fldXJUihfzHwcX5pw",
-    ],
-    comments: [
-      "fldcQWGwqE8ErLyAg",
-      "fldrDlsnGxl0N195r",
-      "fldIiWeFWrQnesXc8",
-      "fldi7FgprxebKcVy1",
-      "fldd7gYpzeUIwgK7h",
     ],
   },
 };
@@ -124,7 +82,7 @@ const FIELD_IDS = {
 };
 
 export function calculateMaturityLevel(totalScore: number): string {
-  if (totalScore <= 74) return "Ad Hoc";
+  if (totalScore <= 74) return "Reactive";
   if (totalScore <= 104) return "Operational";
   if (totalScore <= 129) return "Strategic";
   return "Transformational";
@@ -162,16 +120,7 @@ export async function submitAssessmentToAirtable(
       }
     });
 
-    // Add comments if present
-    if (sectionData.comment) {
-      sectionMapping.comments.forEach((fieldId, index) => {
-        // For simplicity, add the same comment to all questions in this section
-        // You could customize this based on your needs
-        fieldsToSubmit[
-          fieldId
-        ] = `${demographics.name}: ${sectionData.comment}`;
-      });
-    }
+    // Comments have been removed from the data model
   });
 
   // Calculate maturity level
@@ -183,40 +132,55 @@ export async function submitAssessmentToAirtable(
 
   // Add action planning fields
   // Handle multi-select fields - only add if there are non-empty values
-  if (actionPlanning.priorityAreas && actionPlanning.priorityAreas.trim() !== "None") {
+  if (
+    actionPlanning.priorityAreas &&
+    actionPlanning.priorityAreas.trim() !== "None"
+  ) {
     const areas = actionPlanning.priorityAreas
       .split(",")
       .map((s) => s.trim())
-      .filter(area => area && area !== "None");
-    
+      .filter((area) => area && area !== "None");
+
     if (areas.length > 0) {
       fieldsToSubmit[FIELD_IDS.actionPlanning.priorityAreas] = areas;
     }
   }
-  
+
   // Handle text fields - only add if non-empty
   if (actionPlanning.quickWins && actionPlanning.quickWins.trim() !== "None") {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.quickWins] = actionPlanning.quickWins;
+    fieldsToSubmit[FIELD_IDS.actionPlanning.quickWins] =
+      actionPlanning.quickWins;
   }
-  
-  if (actionPlanning.strategicShifts && actionPlanning.strategicShifts.trim() !== "None") {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.strategicShifts] = actionPlanning.strategicShifts;
+
+  if (
+    actionPlanning.strategicShifts &&
+    actionPlanning.strategicShifts.trim() !== "None"
+  ) {
+    fieldsToSubmit[FIELD_IDS.actionPlanning.strategicShifts] =
+      actionPlanning.strategicShifts;
   }
-  
+
   // Handle another multi-select field
-  if (actionPlanning.stakeholders && actionPlanning.stakeholders.trim() !== "None") {
+  if (
+    actionPlanning.stakeholders &&
+    actionPlanning.stakeholders.trim() !== "None"
+  ) {
     const stakeholders = actionPlanning.stakeholders
       .split(",")
       .map((s) => s.trim())
-      .filter(person => person && person !== "None");
-    
+      .filter((person) => person && person !== "None");
+
     if (stakeholders.length > 0) {
       fieldsToSubmit[FIELD_IDS.actionPlanning.stakeholders] = stakeholders;
     }
   }
-  
-  if (actionPlanning.successMetrics && actionPlanning.successMetrics.trim() !== "None") {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.successMetrics] = actionPlanning.successMetrics;
+
+  if (
+    actionPlanning.successMetrics &&
+    actionPlanning.successMetrics.trim() !== "None"
+  ) {
+    fieldsToSubmit[FIELD_IDS.actionPlanning.successMetrics] =
+      actionPlanning.successMetrics;
   }
 
   // Get environment variables
