@@ -81,8 +81,8 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
             <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 p-10 lg:p-16 mb-20 border border-slate-100">
               <div className="grid lg:grid-cols-3 gap-12 mb-12">
                 <div className="text-center group">
-                  <div className="w-20 h-20 bg-gradient-to-br from-coral-400 to-coral-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-coral-200 group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-white">1</span>
+                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-3xl font-bold text-coral-600">1</span>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Complete Assessment
@@ -94,8 +94,8 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                 </div>
 
                 <div className="text-center group">
-                  <div className="w-20 h-20 bg-gradient-to-br from-coral-400 to-coral-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-coral-200 group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-white">2</span>
+                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-3xl font-bold text-coral-600">2</span>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Get Your Score
@@ -107,8 +107,8 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                 </div>
 
                 <div className="text-center group">
-                  <div className="w-20 h-20 bg-gradient-to-br from-coral-400 to-coral-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-coral-200 group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-white">3</span>
+                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-3xl font-bold text-coral-600">3</span>
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-4">
                     Take Action
