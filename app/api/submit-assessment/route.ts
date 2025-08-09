@@ -7,10 +7,12 @@ export async function POST(request: Request) {
     // Parse the request body
     const assessmentData: AssessmentData = await request.json();
     
-    // Validate the data
-    if (!assessmentData.demographics?.name || !assessmentData.demographics?.email) {
+    // Validate the data - all fields are optional except consent validation
+    // If consent is given, name and email must be provided
+    if (assessmentData.demographics?.consent && 
+        (!assessmentData.demographics?.name || !assessmentData.demographics?.email)) {
       return NextResponse.json(
-        { error: 'Missing required fields: name and email' },
+        { error: 'Name and email are required when consent is given' },
         { status: 400 }
       );
     }
