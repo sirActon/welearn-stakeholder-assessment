@@ -128,7 +128,7 @@ export function DemographicsStep({ demographics, onChange }: Props) {
 
           {/* Show "Other" text input if selected */}
           {showOtherIndustry && (
-            <div className="mt-3">
+            <div className="mt-3 ml-4 pl-3 border-l-2 border-coral-200">
               <Label
                 htmlFor="industry-other"
                 className="text-sm font-medium text-slate-700 block mb-1.5"
@@ -170,13 +170,14 @@ export function DemographicsStep({ demographics, onChange }: Props) {
         </div>
 
         {/* Question 4: Strategy Review - Conditionally shown based on Question 3 */}
-        {(demographics.hasStrategy === "yes" || demographics.hasStrategy === "in-development") && (
-          <div className="space-y-3">
+        {(demographics.hasStrategy === "yes" ||
+          demographics.hasStrategy === "in-development") && (
+          <div className="space-y-3 ml-4 pl-3 border-l-2 border-coral-200 mt-4">
             <Label
-              className="text-base font-semibold text-slate-800 block mb-2"
               htmlFor="strategy-reviewed"
+              className="text-sm font-medium text-slate-700 block mb-1.5"
             >
-              4. When was your learning strategy last reviewed?
+              When was your learning strategy last reviewed?
             </Label>
             <Select
               value={demographics.strategyLastReviewed || ""}
@@ -186,10 +187,14 @@ export function DemographicsStep({ demographics, onChange }: Props) {
                 <SelectValue placeholder="Select timeframe" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="within-6-months">Within the last 6 months</SelectItem>
+                <SelectItem value="within-6-months">
+                  Within the last 6 months
+                </SelectItem>
                 <SelectItem value="6-12-months">6-12 months ago</SelectItem>
                 <SelectItem value="1-2-years">1-2 years ago</SelectItem>
-                <SelectItem value="2-plus-years">More than 2 years ago</SelectItem>
+                <SelectItem value="2-plus-years">
+                  More than 2 years ago
+                </SelectItem>
                 <SelectItem value="never">Never been reviewed</SelectItem>
               </SelectContent>
             </Select>

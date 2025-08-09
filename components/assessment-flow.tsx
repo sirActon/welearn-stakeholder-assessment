@@ -243,13 +243,22 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       // Always allow proceeding from Action Planning
       return true;
     }
-    // Demographics step is now at the end
+    // Demographics step is now at the end - contact fields are optional
     if (state.currentStep === totalSteps - 1) {
-      return (
-        !!state.demographics.name &&
-        !!state.demographics.email &&
-        state.demographics.consent
-      );
+      // Required fields: companySize, industry (with industryOther if 'Other' selected), hasStrategy
+      const hasRequiredFields = !!state.demographics.companySize && 
+                              !!state.demographics.industry &&
+                              !!state.demographics.hasStrategy;
+                              
+      // If industry is "Other", then industryOther is required
+      const hasValidIndustry = state.demographics.industry !== "Other" || 
+                              (state.demographics.industry === "Other" && !!state.demographics.industryOther);
+      
+      // Contact fields are optional - only check consent if name or email is provided
+      const contactFieldsValid = (!state.demographics.name && !state.demographics.email) || 
+                               (!!state.demographics.name && !!state.demographics.email && state.demographics.consent);
+      
+      return hasRequiredFields && hasValidIndustry && contactFieldsValid;
     }
     if (state.currentStep > 0 && state.currentStep <= sections.length) {
       const sectionKey = sections[state.currentStep - 1].key;
