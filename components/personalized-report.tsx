@@ -21,7 +21,7 @@ const sectionNames = {
 }
 
 const recommendations = {
-  "Ad Hoc": {
+  "Reactive": {
     title: "Building Your Foundation",
     items: [
       "Develop a formal learning strategy document",
@@ -67,7 +67,7 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
   })
 
   const getRecommendations = () => {
-    return recommendations[results.maturityLevel as keyof typeof recommendations] || recommendations["Ad Hoc"]
+    return recommendations[results.maturityLevel as keyof typeof recommendations] || recommendations["Reactive"]
   }
 
   return (
@@ -141,26 +141,68 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
           </CardContent>
         </Card>
 
+        {/* Maturity Model */}
+        <Card className="mb-8 shadow-xl shadow-slate-200/50 border-0 rounded-xl overflow-hidden">
+          <CardHeader className="px-8 py-6">
+            <CardTitle className="text-2xl font-medium text-slate-800">
+              Your Maturity Level: <span className="text-coral-600">{results.maturityLevel}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-8 pb-8">
+            <p className="text-slate-600 mb-6">{results.maturityDescription}</p>
+            
+            {/* Maturity Level Explanation */}
+            <h4 className="font-medium text-slate-800 mb-4">Understanding the Maturity Model</h4>
+            <div className="grid md:grid-cols-4 gap-4">
+              <div
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${results.maturityLevel === "Reactive" ? "border-red-400 bg-red-50 shadow-md" : "border-gray-200 bg-gray-50"}`}
+              >
+                <h4 className="font-medium text-red-600 mb-2 text-sm">Reactive (0-74)</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">Basic learning activities with limited strategy</p>
+              </div>
+              <div
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${results.maturityLevel === "Operational" ? "border-coral-400 bg-coral-50 shadow-md" : "border-gray-200 bg-gray-50"}`}
+              >
+                <h4 className="font-medium text-coral-600 mb-2 text-sm">Operational (75-104)</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">Structured processes with some measurement</p>
+              </div>
+              <div
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${results.maturityLevel === "Strategic" ? "border-blue-400 bg-blue-50 shadow-md" : "border-gray-200 bg-gray-50"}`}
+              >
+                <h4 className="font-medium text-blue-600 mb-2 text-sm">Strategic (105-129)</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">Aligned with business goals and data-driven</p>
+              </div>
+              <div
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${results.maturityLevel === "Transformational" ? "border-green-400 bg-green-50 shadow-md" : "border-gray-200 bg-gray-50"}`}
+              >
+                <h4 className="font-medium text-green-600 mb-2 text-sm">Transformational (130-150)</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">Innovation-driven with continuous improvement</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
         {/* Detailed Section Results */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="text-2xl text-slate-800">Detailed Section Results</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
+            <div className="grid md:grid-cols-3 gap-8">
               {Object.entries(results.sectionScores).map(([sectionKey, score]) => (
-                <div key={sectionKey} className="border-b pb-6 last:border-b-0">
-                  <div className="flex justify-between items-center mb-3">
-                    <h4 className="text-lg font-semibold text-slate-800">
+                <div key={sectionKey} className="shadow-md shadow-slate-200/50 border border-slate-100 rounded-xl overflow-hidden">
+                  <div className="px-6 py-4 bg-white">
+                    <h3 className="text-base font-medium text-slate-800">
                       {sectionNames[sectionKey as keyof typeof sectionNames]}
-                    </h4>
-                    <span className="text-xl font-bold text-slate-800">{score}/25</span>
+                    </h3>
                   </div>
-                  <Progress value={(score / 25) * 100} className="h-4 mb-2" />
-                  <p className="text-sm text-slate-600">
-                    Performance: {Math.round((score / 25) * 100)}% -{" "}
-                    {score >= 20 ? "Excellent" : score >= 15 ? "Good" : score >= 10 ? "Developing" : "Needs Attention"}
-                  </p>
+                  <div className="px-6 py-4 bg-white">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-2xl font-semibold text-coral-600">{score}/25</span>
+                      <span className="text-sm font-medium text-slate-500">{Math.round((score / 25) * 100)}%</span>
+                    </div>
+                    <Progress value={(score / 25) * 100} className="h-3 rounded-full" />
+                  </div>
                 </div>
               ))}
             </div>

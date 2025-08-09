@@ -88,7 +88,8 @@ export default function Home() {
       maturityDescription,
     });
 
-    setCurrentStep("results");
+    // Skip the results step and go directly to the report
+    setCurrentStep("report");
   };
 
   const handleViewReport = () => {

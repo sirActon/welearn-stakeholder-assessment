@@ -243,22 +243,19 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       // Always allow proceeding from Action Planning
       return true;
     }
-    // Demographics step is now at the end - contact fields are optional
+    // Demographics step is now at the end - ALL fields are optional
     if (state.currentStep === totalSteps - 1) {
-      // Required fields: companySize, industry (with industryOther if 'Other' selected), hasStrategy
-      const hasRequiredFields = !!state.demographics.companySize && 
-                              !!state.demographics.industry &&
-                              !!state.demographics.hasStrategy;
-                              
-      // If industry is "Other", then industryOther is required
-      const hasValidIndustry = state.demographics.industry !== "Other" || 
-                              (state.demographics.industry === "Other" && !!state.demographics.industryOther);
+      // Everything is optional except for the consent validation
       
-      // Contact fields are optional - only check consent if name or email is provided
-      const contactFieldsValid = (!state.demographics.name && !state.demographics.email) || 
-                               (!!state.demographics.name && !!state.demographics.email && state.demographics.consent);
+      // If consent is checked, then name and email are required
+      const consentValidation = !state.demographics.consent || 
+                               (state.demographics.consent && !!state.demographics.name && !!state.demographics.email);
       
-      return hasRequiredFields && hasValidIndustry && contactFieldsValid;
+      // If industry is "Other", then industryOther should be provided
+      const industryValidation = state.demographics.industry !== "Other" || 
+                               (state.demographics.industry === "Other" && !!state.demographics.industryOther);
+      
+      return consentValidation && industryValidation;
     }
     if (state.currentStep > 0 && state.currentStep <= sections.length) {
       const sectionKey = sections[state.currentStep - 1].key;
