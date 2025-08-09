@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -59,6 +60,8 @@ const recommendations = {
   },
 }
 
+// PDF Download functionality will be implemented in a simpler way to avoid SSR issues
+
 export default function PersonalizedReport({ assessmentData, results, onBackToLanding }: PersonalizedReportProps) {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -83,6 +86,14 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
               <Button
                 variant="outline"
                 className="text-white border-white hover:bg-white hover:text-slate-900 bg-transparent px-6 py-3 font-semibold rounded-xl"
+                onClick={() => {
+                  // Let's create a dedicated page for PDF generation
+                  const url = `/generate-pdf?data=${encodeURIComponent(JSON.stringify({
+                    assessmentData,
+                    results,
+                  }))}`;
+                  window.open(url, '_blank');
+                }}
               >
                 Download PDF
               </Button>
