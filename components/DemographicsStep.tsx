@@ -1,10 +1,16 @@
 // components/DemographicsStep.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { Demographics } from "./types";
 
 interface Props {
@@ -13,175 +19,247 @@ interface Props {
 }
 
 export function DemographicsStep({ demographics, onChange }: Props) {
+  const [showOtherIndustry, setShowOtherIndustry] = useState(false);
+
+  // Industry options
+  const industryOptions = [
+    "Accounting",
+    "Advertising & Marketing",
+    "Agriculture",
+    "Arts & Entertainment",
+    "Automotive",
+    "Construction",
+    "Consulting",
+    "Consumer Goods",
+    "Education",
+    "Energy & Utilities",
+    "Engineering",
+    "Financial Services",
+    "Food & Beverage",
+    "Government",
+    "Healthcare & Medical",
+    "Hospitality",
+    "Information Technology (IT)",
+    "Insurance",
+    "Legal Services",
+    "Logistics & Transportation",
+    "Manufacturing",
+    "Media & Publishing",
+    "Nonprofit",
+    "Pharmaceuticals & Biotech",
+    "Professional Services",
+    "Real Estate",
+    "Retail & E-Commerce",
+    "Software & Internet",
+    "Telecommunications",
+    "Travel & Tourism",
+    "Veterinary & Pet Services",
+    "Other",
+  ];
+
+  // Check if we need to show the "Other" input field
+  useEffect(() => {
+    setShowOtherIndustry(demographics.industry === "Other");
+  }, [demographics.industry]);
+
   return (
     <Card className="shadow-xl shadow-slate-200/50 border-0 rounded-3xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-slate-50 to-coral-50 p-10">
         <CardTitle className="text-3xl font-bold text-slate-900 mb-4">
           Demographic & Contextual Information
         </CardTitle>
-        <p className="text-lg text-slate-600 leading-relaxed mb-4">
-          Please help us understand your organization better. This information will be used to provide benchmarking insights and shape future research.
+        <p className="text-lg text-slate-600 leading-relaxed">
+          Help us understand your context so we can provide more relevant
+          insights and benchmarking. Your contact information is optional, but
+          allows us to share personalized recommendations.
         </p>
       </CardHeader>
-      <CardContent className="p-10 space-y-12">
-        {/* Company Size */}
-        <div className="space-y-5">
-          <h3 className="text-xl font-semibold text-slate-800">1. Company Size</h3>
-          <p className="text-slate-600">Select the range that best describes your organization:</p>
-          
-          <RadioGroup
-            value={demographics.companySize}
-            onValueChange={(value) => onChange("companySize", value)}
-            className="space-y-3"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="<100" id="size-lt100" />
-              <Label htmlFor="size-lt100" className="text-slate-800">Fewer than 100 employees</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="100-499" id="size-100-499" />
-              <Label htmlFor="size-100-499" className="text-slate-800">100–499 employees</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="500-999" id="size-500-999" />
-              <Label htmlFor="size-500-999" className="text-slate-800">500–999 employees</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1000-4999" id="size-1000-4999" />
-              <Label htmlFor="size-1000-4999" className="text-slate-800">1,000–4,999 employees</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="5000-9999" id="size-5000-9999" />
-              <Label htmlFor="size-5000-9999" className="text-slate-800">5,000–9,999 employees</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="10000+" id="size-10000" />
-              <Label htmlFor="size-10000" className="text-slate-800">10,000+ employees</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        
-        {/* Industry */}
+
+      <CardContent className="p-10 space-y-8">
+        {/* Question 1: Company Size */}
         <div className="space-y-3">
-          <h3 className="text-xl font-semibold text-slate-800">2. Industry</h3>
-          <p className="text-slate-600">What industry best represents your organization?</p>
-          <Input
-            placeholder="e.g. Healthcare, Finance, Technology, Education, etc."
-            value={demographics.industry}
-            onChange={(e) => onChange("industry", e.target.value)}
-            className="w-full py-6 px-5 text-base rounded-xl"
-          />
+          <Label
+            className="text-base font-semibold text-slate-800 block mb-2"
+            htmlFor="company-size"
+          >
+            1. What is your company size?
+          </Label>
+          <Select
+            value={demographics.companySize || ""}
+            onValueChange={(value) => onChange("companySize", value)}
+          >
+            <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
+              <SelectValue placeholder="Select company size" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="1-50">1-50 employees</SelectItem>
+              <SelectItem value="51-200">51-200 employees</SelectItem>
+              <SelectItem value="201-500">201-500 employees</SelectItem>
+              <SelectItem value="501-1000">501-1000 employees</SelectItem>
+              <SelectItem value="1001-5000">1001-5000 employees</SelectItem>
+              <SelectItem value="5000+">5000+ employees</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        
-        {/* Learning Strategy */}
-        <div className="space-y-5">
-          <h3 className="text-xl font-semibold text-slate-800">3. Do you currently have a formal learning strategy in place?</h3>
-          
-          <RadioGroup
-            value={demographics.hasStrategy}
+
+        {/* Question 2: Industry */}
+        <div className="space-y-3">
+          <Label
+            className="text-base font-semibold text-slate-800 block mb-2"
+            htmlFor="industry"
+          >
+            2. What industry are you in?
+          </Label>
+          <Select
+            value={demographics.industry || ""}
+            onValueChange={(value) => onChange("industry", value)}
+          >
+            <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
+              <SelectValue placeholder="Select industry" />
+            </SelectTrigger>
+            <SelectContent>
+              {industryOptions.map((industry) => (
+                <SelectItem key={industry} value={industry}>
+                  {industry}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Show "Other" text input if selected */}
+          {showOtherIndustry && (
+            <div className="mt-3">
+              <Label
+                htmlFor="industry-other"
+                className="text-sm font-medium text-slate-700 block mb-1.5"
+              >
+                Please specify your industry:
+              </Label>
+              <Input
+                id="industry-other"
+                placeholder="Your industry"
+                className="rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400"
+                value={demographics.industryOther || ""}
+                onChange={(e) => onChange("industryOther", e.target.value)}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Question 3: Learning Strategy */}
+        <div className="space-y-3">
+          <Label
+            className="text-base font-semibold text-slate-800 block mb-2"
+            htmlFor="has-strategy"
+          >
+            3. Do you have a formal learning strategy?
+          </Label>
+          <Select
+            value={demographics.hasStrategy || ""}
             onValueChange={(value) => onChange("hasStrategy", value)}
-            className="space-y-3"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="yes" id="strategy-yes" />
-              <Label htmlFor="strategy-yes" className="text-slate-800">Yes</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="no" id="strategy-no" />
-              <Label htmlFor="strategy-no" className="text-slate-800">No</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="in-development" id="strategy-dev" />
-              <Label htmlFor="strategy-dev" className="text-slate-800">In development</Label>
-            </div>
-          </RadioGroup>
+            <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="yes">Yes</SelectItem>
+              <SelectItem value="no">No</SelectItem>
+              <SelectItem value="in-development">In development</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        
-        {/* Strategy Review */}
-        <div className="space-y-5">
-          <h3 className="text-xl font-semibold text-slate-800">4. If yes, when was your learning strategy last created or reviewed?</h3>
-          
-          <RadioGroup
-            value={demographics.strategyLastReviewed}
+
+        {/* Question 4: Strategy Review */}
+        <div className="space-y-3">
+          <Label
+            className="text-base font-semibold text-slate-800 block mb-2"
+            htmlFor="strategy-reviewed"
+          >
+            4. When was your learning strategy last reviewed?
+          </Label>
+          <Select
+            value={demographics.strategyLastReviewed || ""}
             onValueChange={(value) => onChange("strategyLastReviewed", value)}
-            className="space-y-3"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="<6months" id="review-6mo" />
-              <Label htmlFor="review-6mo" className="text-slate-800">Within the last 6 months</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="6-12months" id="review-6-12" />
-              <Label htmlFor="review-6-12" className="text-slate-800">6–12 months ago</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1-2years" id="review-1-2" />
-              <Label htmlFor="review-1-2" className="text-slate-800">1–2 years ago</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value=">2years" id="review-2plus" />
-              <Label htmlFor="review-2plus" className="text-slate-800">More than 2 years ago</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="not-sure" id="review-unsure" />
-              <Label htmlFor="review-unsure" className="text-slate-800">Not sure</Label>
-            </div>
-          </RadioGroup>
+            <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
+              <SelectValue placeholder="Select timeframe" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="within-6-months">Within the last 6 months</SelectItem>
+              <SelectItem value="6-12-months">6-12 months ago</SelectItem>
+              <SelectItem value="1-2-years">1-2 years ago</SelectItem>
+              <SelectItem value="2-plus-years">More than 2 years ago</SelectItem>
+              <SelectItem value="never">Never been reviewed</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-        
-        {/* Contact Information */}
-        <div className="pt-4 border-t border-slate-100">
-          <h3 className="text-xl font-semibold text-slate-800 mb-4">Stay Connected</h3>
-          <p className="text-slate-600 mb-6">
-            WeLearn is producing research, benchmarks, and insights based on aggregated data from this scorecard. 
-            If you'd like to receive those findings and future resources:
-          </p>
-          
-          <h4 className="text-lg font-medium text-slate-800 mb-4">5. Please provide your contact details (optional):</h4>
-          
+
+        {/* Contact Details Section */}
+        <div className="pt-4 border-t border-slate-200">
+          <h3 className="text-base font-semibold text-slate-800 mb-4">
+            Contact Details (Optional)
+          </h3>
           <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-base font-medium text-slate-800">Name:</Label>
+            <div>
+              <Label
+                htmlFor="name"
+                className="text-sm font-medium text-slate-700 block mb-1.5"
+              >
+                Name
+              </Label>
               <Input
                 id="name"
-                value={demographics.name}
-                onChange={(e) => onChange("name", e.target.value)}
-                className="w-full py-6 px-5 text-base rounded-xl"
                 placeholder="Your name"
+                className="rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400"
+                value={demographics.name || ""}
+                onChange={(e) => onChange("name", e.target.value)}
               />
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="company" className="text-base font-medium text-slate-800">Company:</Label>
+            <div>
+              <Label
+                htmlFor="company"
+                className="text-sm font-medium text-slate-700 block mb-1.5"
+              >
+                Company
+              </Label>
               <Input
                 id="company"
-                value={demographics.company}
-                onChange={(e) => onChange("company", e.target.value)}
-                className="w-full py-6 px-5 text-base rounded-xl"
                 placeholder="Your company name"
+                className="rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400"
+                value={demographics.company || ""}
+                onChange={(e) => onChange("company", e.target.value)}
               />
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-base font-medium text-slate-800">Email Address:</Label>
+            <div>
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium text-slate-700 block mb-1.5"
+              >
+                Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
-                value={demographics.email}
+                placeholder="you@example.com"
+                className="rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400"
+                value={demographics.email || ""}
                 onChange={(e) => onChange("email", e.target.value)}
-                className="w-full py-6 px-5 text-base rounded-xl"
-                placeholder="your.email@example.com"
               />
             </div>
-            
-            <div className="flex items-center space-x-2 pt-4">
-              <Checkbox 
-                id="consent" 
-                checked={demographics.consent as boolean}
-                onCheckedChange={(checked) => onChange("consent", !!checked)}
+            <div className="flex items-center space-x-2 pt-2">
+              <Checkbox
+                id="terms"
+                checked={demographics.consent || false}
+                onCheckedChange={(checked) =>
+                  onChange("consent", checked === true)
+                }
               />
-              <Label htmlFor="consent" className="text-sm text-slate-600">
-                I consent to receive emails from WeLearn with research findings and future resources.
+              <Label
+                htmlFor="terms"
+                className="text-sm font-medium text-slate-700"
+              >
+                I consent to receiving emails from WeLearn with personalized
+                assessment feedback.
               </Label>
             </div>
           </div>

@@ -41,6 +41,7 @@ const initialState: State = {
   demographics: { 
     companySize: "", 
     industry: "", 
+    industryOther: "",
     hasStrategy: "", 
     strategyLastReviewed: "", 
     name: "", 

@@ -6,6 +6,7 @@ export interface SectionResponse {
 export interface Demographics {
   companySize: string;
   industry: string;
+  industryOther: string;
   hasStrategy: string;
   strategyLastReviewed: string;
   name: string;
