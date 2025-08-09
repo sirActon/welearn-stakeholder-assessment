@@ -61,12 +61,14 @@ const FIELD_ID_MAPPING = {
 // Fields for demographics and summary data
 const FIELD_IDS = {
   demographics: {
-    name: "fldNptclsp9416arf",
-    email: "fld7jcYxfQQCfhUWI",
-    companyName: "fldIGBJlDMIgtP3ms",
-    companySize: "fld2jQmNSZ6wfsBmT",
-    industry: "fldiJW8GV8t5d7fux",
-    lastModifiedYear: "fldZPAsLHiHsUet6",
+    name: "fldNptclsp9416arf",              // Name
+    email: "fld7jcYxfQQCfhUWI",             // Email
+    companyName: "fldNYrdLAcyINBI77",        // Submitted Company Name
+    companySize: "fld2jQmNSZ6wfsBmT",        // Company Size
+    industry: "fldiJW8GV8t5d7fux",          // Industry
+    industryOther: "fldCTn0pFBHq261ad",      // Other Industry
+    hasStrategy: "fldxX5uKu12czcM8f",       // Do you currently have a formal learning strategy in place?
+    strategyLastReviewed: "fldNjndJ9m8Lduk3X", // If yes, when was your learning strategy last created or reviewed?
   },
   summary: {
     totalScore: "fldAlU8EvL3hV7C2c",
@@ -97,9 +99,38 @@ export async function submitAssessmentToAirtable(
   let totalScore = 0;
   let fieldsToSubmit: Record<string, any> = {};
 
-  // Add demographics fields
-  fieldsToSubmit[FIELD_IDS.demographics.name] = demographics.name;
-  fieldsToSubmit[FIELD_IDS.demographics.email] = demographics.email;
+  // Add demographics fields (only add non-empty values)
+  if (demographics.name) {
+    fieldsToSubmit[FIELD_IDS.demographics.name] = demographics.name;
+  }
+  
+  if (demographics.email) {
+    fieldsToSubmit[FIELD_IDS.demographics.email] = demographics.email;
+  }
+  
+  if (demographics.company) {
+    fieldsToSubmit[FIELD_IDS.demographics.companyName] = demographics.company;
+  }
+  
+  if (demographics.companySize) {
+    fieldsToSubmit[FIELD_IDS.demographics.companySize] = demographics.companySize;
+  }
+  
+  if (demographics.industry) {
+    fieldsToSubmit[FIELD_IDS.demographics.industry] = demographics.industry;
+  }
+  
+  if (demographics.industryOther) {
+    fieldsToSubmit[FIELD_IDS.demographics.industryOther] = demographics.industryOther;
+  }
+  
+  if (demographics.hasStrategy) {
+    fieldsToSubmit[FIELD_IDS.demographics.hasStrategy] = demographics.hasStrategy;
+  }
+  
+  if (demographics.strategyLastReviewed) {
+    fieldsToSubmit[FIELD_IDS.demographics.strategyLastReviewed] = demographics.strategyLastReviewed;
+  }
 
   // Process sections data
   Object.entries(sections).forEach(([sectionKey, sectionData]) => {
