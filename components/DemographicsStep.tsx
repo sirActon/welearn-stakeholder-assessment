@@ -169,30 +169,32 @@ export function DemographicsStep({ demographics, onChange }: Props) {
           </Select>
         </div>
 
-        {/* Question 4: Strategy Review */}
-        <div className="space-y-3">
-          <Label
-            className="text-base font-semibold text-slate-800 block mb-2"
-            htmlFor="strategy-reviewed"
-          >
-            4. When was your learning strategy last reviewed?
-          </Label>
-          <Select
-            value={demographics.strategyLastReviewed || ""}
-            onValueChange={(value) => onChange("strategyLastReviewed", value)}
-          >
-            <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
-              <SelectValue placeholder="Select timeframe" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="within-6-months">Within the last 6 months</SelectItem>
-              <SelectItem value="6-12-months">6-12 months ago</SelectItem>
-              <SelectItem value="1-2-years">1-2 years ago</SelectItem>
-              <SelectItem value="2-plus-years">More than 2 years ago</SelectItem>
-              <SelectItem value="never">Never been reviewed</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Question 4: Strategy Review - Conditionally shown based on Question 3 */}
+        {(demographics.hasStrategy === "yes" || demographics.hasStrategy === "in-development") && (
+          <div className="space-y-3">
+            <Label
+              className="text-base font-semibold text-slate-800 block mb-2"
+              htmlFor="strategy-reviewed"
+            >
+              4. When was your learning strategy last reviewed?
+            </Label>
+            <Select
+              value={demographics.strategyLastReviewed || ""}
+              onValueChange={(value) => onChange("strategyLastReviewed", value)}
+            >
+              <SelectTrigger className="w-full rounded-xl border-slate-200 focus:border-coral-400 focus:ring-coral-400">
+                <SelectValue placeholder="Select timeframe" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="within-6-months">Within the last 6 months</SelectItem>
+                <SelectItem value="6-12-months">6-12 months ago</SelectItem>
+                <SelectItem value="1-2-years">1-2 years ago</SelectItem>
+                <SelectItem value="2-plus-years">More than 2 years ago</SelectItem>
+                <SelectItem value="never">Never been reviewed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Contact Details Section */}
         <div className="pt-4 border-t border-slate-200">
