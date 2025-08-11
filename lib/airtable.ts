@@ -165,13 +165,13 @@ export async function submitAssessmentToAirtable(
   // Add submission ID to database
   fieldsToSubmit[FIELD_IDS.summary.submissionId] = assessmentData.submissionId || "fldu0yi0EKKvAH2gr";
 
-  // Add action planning fields
+  // Add action planning fields if they exist
   // Handle multi-select fields - only add if there are non-empty values
   if (
-    actionPlanning.priorityAreas &&
-    actionPlanning.priorityAreas.trim() !== "None"
+    actionPlanning?.priorityAreas &&
+    actionPlanning?.priorityAreas.trim() !== "None"
   ) {
-    const areas = actionPlanning.priorityAreas
+    const areas = actionPlanning?.priorityAreas
       .split(",")
       .map((s) => s.trim())
       .filter((area) => area && area !== "None");
@@ -182,25 +182,25 @@ export async function submitAssessmentToAirtable(
   }
 
   // Handle text fields - only add if non-empty
-  if (actionPlanning.quickWins && actionPlanning.quickWins.trim() !== "None") {
+  if (actionPlanning?.quickWins && actionPlanning?.quickWins.trim() !== "None") {
     fieldsToSubmit[FIELD_IDS.actionPlanning.quickWins] =
-      actionPlanning.quickWins;
+      actionPlanning?.quickWins;
   }
 
   if (
-    actionPlanning.strategicShifts &&
-    actionPlanning.strategicShifts.trim() !== "None"
+    actionPlanning?.strategicShifts &&
+    actionPlanning?.strategicShifts.trim() !== "None"
   ) {
     fieldsToSubmit[FIELD_IDS.actionPlanning.strategicShifts] =
-      actionPlanning.strategicShifts;
+      actionPlanning?.strategicShifts;
   }
 
   // Handle another multi-select field
   if (
-    actionPlanning.stakeholders &&
-    actionPlanning.stakeholders.trim() !== "None"
+    actionPlanning?.stakeholders &&
+    actionPlanning?.stakeholders.trim() !== "None"
   ) {
-    const stakeholders = actionPlanning.stakeholders
+    const stakeholders = actionPlanning?.stakeholders
       .split(",")
       .map((s) => s.trim())
       .filter((person) => person && person !== "None");
@@ -211,11 +211,11 @@ export async function submitAssessmentToAirtable(
   }
 
   if (
-    actionPlanning.successMetrics &&
-    actionPlanning.successMetrics.trim() !== "None"
+    actionPlanning?.successMetrics &&
+    actionPlanning?.successMetrics.trim() !== "None"
   ) {
     fieldsToSubmit[FIELD_IDS.actionPlanning.successMetrics] =
-      actionPlanning.successMetrics;
+      actionPlanning?.successMetrics;
   }
 
   // Get environment variables

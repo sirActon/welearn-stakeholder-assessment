@@ -12,7 +12,7 @@ import { SectionStep } from "./SectionStep";
 import { IntroductionStep } from "./IntroductionStep";
 import { Header } from "./Header";
 import { ProgressBar } from "./ProgressBar";
-// Database submission removed
+import { submitAssessment } from "@/lib/client-api";
 import { generateSubmissionId } from "@/lib/id-generator";
 
 
@@ -284,15 +284,21 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
         submissionId, // Add the submission ID
       };
       
-      // Database submission removed - just show success message
-      toast.success("Assessment completed successfully!");
+      // Submit to Airtable database
+      const result = await submitAssessment(processedData);
       
-      // Pass the data to the parent component
-      onComplete(processedData);
+      if (result.success) {
+        toast.success("Assessment submitted successfully!");
+        // Pass the data to the parent component
+        onComplete(processedData);
+      } else {
+        setSubmitError(result.error || "Failed to submit assessment");
+        toast.error(result.message || "An error occurred");
+      }
     } catch (error) {
-      console.error("Error processing assessment:", error);
+      console.error("Error submitting assessment:", error);
       setSubmitError("An unexpected error occurred");
-      toast.error("Failed to complete assessment. Please try again.");
+      toast.error("Failed to submit assessment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
