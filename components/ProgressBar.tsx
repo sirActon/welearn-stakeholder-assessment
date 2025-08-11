@@ -14,7 +14,7 @@ const stepLabels = [
   "Content",
   "Measurement",
   "Culture",
-  "Planning",
+  "Demographics", // Changed from "Planning" to "Demographics" since we removed the planning step
 ];
 
 export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {

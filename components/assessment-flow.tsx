@@ -8,11 +8,11 @@ import { toast } from "sonner";
 import type { AssessmentData, Demographics, ActionPlanning, SectionResponse } from "./types";
 import { DemographicsStep } from "./DemographicsStep";
 import { SectionStep } from "./SectionStep";
-import { ActionPlanningStep } from "./ActionPlanningStep";
+// Action planning step removed
 import { IntroductionStep } from "./IntroductionStep";
 import { Header } from "./Header";
 import { ProgressBar } from "./ProgressBar";
-import { submitAssessment } from "@/lib/client-api";
+// Database submission removed
 import { generateSubmissionId } from "@/lib/id-generator";
 
 
@@ -35,7 +35,7 @@ type Action =
       questionIndex: number;
       value: number;
     }
-  | { type: "updateActionPlanning"; field: keyof ActionPlanning; value: string }
+  // Action planning action type removed
   | { type: "setStep"; step: number };
 
 const initialState: State = {
@@ -51,7 +51,7 @@ const initialState: State = {
     consent: false 
   },
   sections: {},
-  actionPlanning: {},
+  // actionPlanning removed
   currentStep: 0,
 };
 
@@ -76,15 +76,7 @@ function reducer(state: State, action: Action): State {
         },
       };
     }
-    // updateSectionComment case removed
-    case "updateActionPlanning":
-      return {
-        ...state,
-        actionPlanning: {
-          ...state.actionPlanning,
-          [action.field]: action.value,
-        },
-      };
+    // Action planning case removed
     case "setStep":
       return { ...state, currentStep: action.step };
     default:
@@ -218,7 +210,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     setHeaderVisible(showHeaderFromUrl || showHeader);
   }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const totalSteps = 1 + sections.length + 1 + 1; // introduction + each dimension + action planning + demographics
+  const totalSteps = 1 + sections.length + 1; // introduction + each dimension + demographics (action planning removed)
 
   const goNext = useCallback(() => {
     if (state.currentStep < totalSteps - 1) {
@@ -239,11 +231,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       // Introduction step - always allow proceeding
       return true;
     }
-    // Action Planning step is now after all sections
-    if (state.currentStep === sections.length + 1) {
-      // Always allow proceeding from Action Planning
-      return true;
-    }
+    // Action Planning step has been removed
     // Demographics step is now at the end - ALL fields are optional
     if (state.currentStep === totalSteps - 1) {
       // Everything is optional except for the consent validation
@@ -292,25 +280,19 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
             },
           ])
         ),
-        actionPlanning: state.actionPlanning,
+        // Action planning removed
         submissionId, // Add the submission ID
       };
       
-      // Submit to Airtable
-      const result = await submitAssessment(processedData);
+      // Database submission removed - just show success message
+      toast.success("Assessment completed successfully!");
       
-      if (result.success) {
-        toast.success("Assessment submitted successfully!");
-        // Pass the data to the parent component
-        onComplete(processedData);
-      } else {
-        setSubmitError(result.error || "Failed to submit assessment");
-        toast.error(result.message || "An error occurred");
-      }
+      // Pass the data to the parent component
+      onComplete(processedData);
     } catch (error) {
-      console.error("Error submitting assessment:", error);
+      console.error("Error processing assessment:", error);
       setSubmitError("An unexpected error occurred");
-      toast.error("Failed to submit assessment. Please try again.");
+      toast.error("Failed to complete assessment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -343,16 +325,6 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
             }
             /* onComment prop removed */
             dimensionNumber={state.currentStep}
-          />
-        )}
-
-        {/* Action Planning step comes after all sections and before demographics */}
-        {state.currentStep === sections.length + 1 && (
-          <ActionPlanningStep
-            actionPlanning={state.actionPlanning}
-            onChange={(field, value) =>
-              dispatch({ type: "updateActionPlanning", field, value })
-            }
           />
         )}
 

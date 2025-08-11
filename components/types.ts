@@ -27,6 +27,6 @@ export interface ActionPlanning {
 export interface AssessmentData {
   demographics: Demographics;
   sections: Record<string, SectionResponse>;
-  actionPlanning: ActionPlanning;
+  actionPlanning?: ActionPlanning; // Made optional since we've removed the action planning step
   submissionId?: string; // Unique identifier for the assessment submission
 }
