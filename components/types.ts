@@ -28,4 +28,5 @@ export interface AssessmentData {
   demographics: Demographics;
   sections: Record<string, SectionResponse>;
   actionPlanning: ActionPlanning;
+  submissionId?: string; // Unique identifier for the assessment submission
 }

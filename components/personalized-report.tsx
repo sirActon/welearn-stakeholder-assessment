@@ -13,12 +13,12 @@ interface PersonalizedReportProps {
 }
 
 const sectionNames = {
-  strategy: "Learning Strategy & Alignment",
-  culture: "Learning Culture & Engagement",
-  content: "Content & Curriculum Design",
-  technology: "Technology & Infrastructure",
-  measurement: "Measurement & Analytics",
-  innovation: "Innovation & Future Readiness",
+  alignment: "Alignment to Business Strategy",
+  governance: "Learning Governance",
+  technology: "Technology and Ecosystem Integration",
+  content: "Content and Experience Strategy",
+  measurement: "Measurement and Analytics",
+  culture: "Culture and Change Readiness",
 }
 
 const recommendations = {
@@ -88,10 +88,16 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
                 className="text-white border-white hover:bg-white hover:text-slate-900 bg-transparent px-6 py-3 font-semibold rounded-xl"
                 onClick={() => {
                   // Let's create a dedicated page for PDF generation
-                  const url = `/generate-pdf?data=${encodeURIComponent(JSON.stringify({
-                    assessmentData,
+                  // Make sure the submission ID is included in the assessment data
+                  const dataToPass = {
+                    assessmentData: {
+                      ...assessmentData,
+                      // Ensure the submission ID is passed to the PDF generation page
+                      submissionId: assessmentData.submissionId || "fldu0yi0EKKvAH2gr"
+                    },
                     results,
-                  }))}`;
+                  };
+                  const url = `/generate-pdf?data=${encodeURIComponent(JSON.stringify(dataToPass))}`;
                   window.open(url, '_blank');
                 }}
               >
@@ -115,7 +121,7 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
           <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 mb-8 tracking-tight">
             Learning Strategy Scorecard Report
           </h1>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 max-w-5xl mx-auto">
             <div className="text-center">
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Participant</p>
               <p className="text-lg font-bold text-slate-900">{assessmentData.demographics.name}</p>
@@ -131,6 +137,10 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
             <div className="text-center">
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Maturity Level</p>
               <p className="text-lg font-bold text-coral-600">{results.maturityLevel}</p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Submission ID</p>
+              <p className="text-lg font-bold text-slate-900">{assessmentData.submissionId || "fldu0yi0EKKvAH2gr"}</p>
             </div>
           </div>
         </div>

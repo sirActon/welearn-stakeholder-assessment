@@ -13,6 +13,7 @@ import { IntroductionStep } from "./IntroductionStep";
 import { Header } from "./Header";
 import { ProgressBar } from "./ProgressBar";
 import { submitAssessment } from "@/lib/client-api";
+import { generateSubmissionId } from "@/lib/id-generator";
 
 
 interface AssessmentFlowProps {
@@ -278,6 +279,9 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     
     try {
       // Prepare the data
+      // Generate a submission ID
+      const submissionId = generateSubmissionId();
+      
       const processedData: AssessmentData = {
         demographics: state.demographics,
         sections: Object.fromEntries(
@@ -289,6 +293,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
           ])
         ),
         actionPlanning: state.actionPlanning,
+        submissionId, // Add the submission ID
       };
       
       // Submit to Airtable

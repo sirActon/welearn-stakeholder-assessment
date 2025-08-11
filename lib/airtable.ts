@@ -73,6 +73,7 @@ const FIELD_IDS = {
   summary: {
     totalScore: "fldAlU8EvL3hV7C2c",
     maturityLevel: "fldwR6IcwXFej9Pzm",
+    submissionId: "fldu0yi0EKKvAH2gr",       // Unique submission ID for reference
   },
   actionPlanning: {
     priorityAreas: "flddZORL2bGfzixG3",
@@ -160,6 +161,9 @@ export async function submitAssessmentToAirtable(
   // Add summary fields
   fieldsToSubmit[FIELD_IDS.summary.totalScore] = totalScore;
   fieldsToSubmit[FIELD_IDS.summary.maturityLevel] = maturityLevel;
+  
+  // Add submission ID to database
+  fieldsToSubmit[FIELD_IDS.summary.submissionId] = assessmentData.submissionId || "fldu0yi0EKKvAH2gr";
 
   // Add action planning fields
   // Handle multi-select fields - only add if there are non-empty values

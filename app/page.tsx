@@ -20,6 +20,7 @@ export type AssessmentData = {
   actionPlanning: {
     [key: string]: string | undefined;
   };
+  submissionId?: string; // Unique identifier for the assessment submission
 };
 
 export type Results = {

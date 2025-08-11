@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
 
 // Section names
 const sectionNames = {
-  strategy: "Learning Strategy & Alignment",
-  culture: "Learning Culture & Engagement",
-  content: "Content & Curriculum Design",
-  technology: "Technology & Infrastructure",
-  measurement: "Measurement & Analytics",
-  innovation: "Innovation & Future Readiness",
+  alignment: "Alignment to Business Strategy",
+  governance: "Learning Governance",
+  technology: "Technology and Ecosystem Integration",
+  content: "Content and Experience Strategy",
+  measurement: "Measurement and Analytics",
+  culture: "Culture and Change Readiness",
 };
 
 // Recommendations
@@ -261,6 +261,7 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
           {assessmentData.demographics.email && (
             <Text>Email: {assessmentData.demographics.email}</Text>
           )}
+          <Text>Submission ID: {assessmentData.submissionId || "fldu0yi0EKKvAH2gr"}</Text>
           {/* Company information removed as it's not in the current type definition */}
         </View>
 
