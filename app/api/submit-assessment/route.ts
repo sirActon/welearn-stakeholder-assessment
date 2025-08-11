@@ -30,10 +30,14 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Error submitting assessment data:', error);
     
+    // Send more detailed error information back to the client for debugging
     return NextResponse.json(
       {
         error: 'Failed to submit assessment',
-        message: error.message || 'Unknown error occurred'
+        message: error.message || 'Unknown error occurred',
+        stack: error.stack,
+        name: error.name,
+        details: JSON.stringify(error),
       },
       { status: error.status || 500 }
     );

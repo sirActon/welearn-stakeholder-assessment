@@ -292,6 +292,9 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
         // Pass the data to the parent component
         onComplete(processedData);
       } else {
+        // Log detailed error information for debugging
+        console.error("Submission error details:", result);
+        
         setSubmitError(result.error || "Failed to submit assessment");
         toast.error(result.message || "An error occurred");
       }
