@@ -1,13 +1,29 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ReportPDF from "@/components/ReportPDF";
 import type { AssessmentData, Results } from "@/app/page";
 import { Button } from "@/components/ui/button";
 
-export default function GeneratePDF() {
+// Loading component for Suspense fallback
+function LoadingPDF() {
+  return (
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+      <div className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+        <h1 className="text-2xl font-bold mb-4">Preparing Your PDF</h1>
+        <p className="text-slate-700 mb-6">Loading report data...</p>
+        <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+          <div className="bg-blue-600 h-full w-1/3 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Wrapper component to use searchParams
+function PDFGenerator() {
   const searchParams = useSearchParams();
   const [parsedData, setParsedData] = useState<{
     assessmentData: AssessmentData;
@@ -100,5 +116,14 @@ export default function GeneratePDF() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Main export component with Suspense boundary
+export default function GeneratePDF() {
+  return (
+    <Suspense fallback={<LoadingPDF />}>
+      <PDFGenerator />
+    </Suspense>
   );
 }
