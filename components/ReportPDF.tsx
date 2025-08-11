@@ -358,32 +358,32 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
         </View>
 
         {/* Reflections */}
-        {(assessmentData.actionPlanning.improvementArea ||
-          assessmentData.actionPlanning.biggestChallenge ||
-          assessmentData.actionPlanning.successVision) && (
+        {(assessmentData.actionPlanning?.improvementArea ||
+          assessmentData.actionPlanning?.biggestChallenge ||
+          assessmentData.actionPlanning?.successVision) && (
           <View style={styles.section}>
             <Text style={styles.sectionHeader}>Your Reflections</Text>
-            {assessmentData.actionPlanning.improvementArea && (
+            {assessmentData.actionPlanning?.improvementArea && (
               <View style={styles.reflectionItem}>
                 <Text style={styles.reflectionTitle}>Area for Improvement</Text>
                 <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning.improvementArea}
+                  {assessmentData.actionPlanning?.improvementArea}
                 </Text>
               </View>
             )}
-            {assessmentData.actionPlanning.biggestChallenge && (
+            {assessmentData.actionPlanning?.biggestChallenge && (
               <View style={styles.reflectionItem}>
                 <Text style={styles.reflectionTitle}>Biggest Challenge</Text>
                 <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning.biggestChallenge}
+                  {assessmentData.actionPlanning?.biggestChallenge}
                 </Text>
               </View>
             )}
-            {assessmentData.actionPlanning.successVision && (
+            {assessmentData.actionPlanning?.successVision && (
               <View style={styles.reflectionItem}>
                 <Text style={styles.reflectionTitle}>Vision of Success</Text>
                 <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning.successVision}
+                  {assessmentData.actionPlanning?.successVision}
                 </Text>
               </View>
             )}

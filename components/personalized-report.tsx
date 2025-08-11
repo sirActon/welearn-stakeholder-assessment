@@ -231,35 +231,35 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
         </Card>
 
         {/* Action Planning Reflections */}
-        {(assessmentData.actionPlanning.improvementArea ||
-          assessmentData.actionPlanning.biggestChallenge ||
-          assessmentData.actionPlanning.successVision) && (
+        {(assessmentData.actionPlanning?.improvementArea ||
+          assessmentData.actionPlanning?.biggestChallenge ||
+          assessmentData.actionPlanning?.successVision) && (
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-2xl text-slate-800">Your Reflections</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {assessmentData.actionPlanning.improvementArea && (
+              {assessmentData.actionPlanning?.improvementArea && (
                 <div>
                   <h4 className="font-semibold text-slate-800 mb-2">Area for Improvement</h4>
                   <p className="text-slate-600 bg-gray-50 p-4 rounded-lg">
-                    {assessmentData.actionPlanning.improvementArea}
+                    {assessmentData.actionPlanning?.improvementArea}
                   </p>
                 </div>
               )}
-              {assessmentData.actionPlanning.biggestChallenge && (
+              {assessmentData.actionPlanning?.biggestChallenge && (
                 <div>
                   <h4 className="font-semibold text-slate-800 mb-2">Biggest Challenge</h4>
                   <p className="text-slate-600 bg-gray-50 p-4 rounded-lg">
-                    {assessmentData.actionPlanning.biggestChallenge}
+                    {assessmentData.actionPlanning?.biggestChallenge}
                   </p>
                 </div>
               )}
-              {assessmentData.actionPlanning.successVision && (
+              {assessmentData.actionPlanning?.successVision && (
                 <div>
                   <h4 className="font-semibold text-slate-800 mb-2">Vision of Success</h4>
                   <p className="text-slate-600 bg-gray-50 p-4 rounded-lg">
-                    {assessmentData.actionPlanning.successVision}
+                    {assessmentData.actionPlanning?.successVision}
                   </p>
                 </div>
               )}
