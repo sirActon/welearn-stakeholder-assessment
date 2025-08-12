@@ -61,19 +61,19 @@ const FIELD_ID_MAPPING = {
 // Fields for demographics and summary data
 const FIELD_IDS = {
   demographics: {
-    name: "fldNptclsp9416arf",              // Name
-    email: "fld7jcYxfQQCfhUWI",             // Email
-    companyName: "fldNYrdLAcyINBI77",        // Submitted Company Name
-    companySize: "fld2jQmNSZ6wfsBmT",        // Company Size
-    industry: "fldiJW8GV8t5d7fux",          // Industry
-    industryOther: "fldCTn0pFBHq261ad",      // Other Industry
-    hasStrategy: "fldxX5uKu12czcM8f",       // Do you currently have a formal learning strategy in place?
+    name: "fldNptclsp9416arf", // Name
+    email: "fld7jcYxfQQCfhUWI", // Email
+    companyName: "fldNYrdLAcyINBI77", // Submitted Company Name
+    companySize: "fld2jQmNSZ6wfsBmT", // Company Size
+    industry: "fldiJW8GV8t5d7fux", // Industry
+    industryOther: "fldCTn0pFBHq261ad", // Other Industry
+    hasStrategy: "fldxX5uKu12czcM8f", // Do you currently have a formal learning strategy in place?
     strategyLastReviewed: "fldNjndJ9m8Lduk3X", // If yes, when was your learning strategy last created or reviewed?
   },
   summary: {
     totalScore: "fldAlU8EvL3hV7C2c",
     maturityLevel: "fldwR6IcwXFej9Pzm",
-    submissionId: "fldu0yi0EKKvAH2gr",       // Unique submission ID for reference
+    submissionId: "fldu0yi0EKKvAH2gr", // Unique submission ID for reference
   },
   actionPlanning: {
     priorityAreas: "flddZORL2bGfzixG3",
@@ -104,33 +104,37 @@ export async function submitAssessmentToAirtable(
   if (demographics.name) {
     fieldsToSubmit[FIELD_IDS.demographics.name] = demographics.name;
   }
-  
+
   if (demographics.email) {
     fieldsToSubmit[FIELD_IDS.demographics.email] = demographics.email;
   }
-  
+
   if (demographics.company) {
     fieldsToSubmit[FIELD_IDS.demographics.companyName] = demographics.company;
   }
-  
+
   if (demographics.companySize) {
-    fieldsToSubmit[FIELD_IDS.demographics.companySize] = demographics.companySize;
+    fieldsToSubmit[FIELD_IDS.demographics.companySize] =
+      demographics.companySize;
   }
-  
+
   if (demographics.industry) {
     fieldsToSubmit[FIELD_IDS.demographics.industry] = demographics.industry;
   }
-  
+
   if (demographics.industryOther) {
-    fieldsToSubmit[FIELD_IDS.demographics.industryOther] = demographics.industryOther;
+    fieldsToSubmit[FIELD_IDS.demographics.industryOther] =
+      demographics.industryOther;
   }
-  
+
   if (demographics.hasStrategy) {
-    fieldsToSubmit[FIELD_IDS.demographics.hasStrategy] = demographics.hasStrategy;
+    fieldsToSubmit[FIELD_IDS.demographics.hasStrategy] =
+      demographics.hasStrategy;
   }
-  
+
   if (demographics.strategyLastReviewed) {
-    fieldsToSubmit[FIELD_IDS.demographics.strategyLastReviewed] = demographics.strategyLastReviewed;
+    fieldsToSubmit[FIELD_IDS.demographics.strategyLastReviewed] =
+      demographics.strategyLastReviewed;
   }
 
   // Process sections data
@@ -161,9 +165,10 @@ export async function submitAssessmentToAirtable(
   // Add summary fields
   fieldsToSubmit[FIELD_IDS.summary.totalScore] = totalScore;
   fieldsToSubmit[FIELD_IDS.summary.maturityLevel] = maturityLevel;
-  
+
   // Add submission ID to database
-  fieldsToSubmit[FIELD_IDS.summary.submissionId] = assessmentData.submissionId || "fldu0yi0EKKvAH2gr";
+  fieldsToSubmit[FIELD_IDS.summary.submissionId] =
+    assessmentData.submissionId || "fldu0yi0EKKvAH2gr";
 
   // Add action planning fields if they exist
   // Handle multi-select fields - only add if there are non-empty values
@@ -182,7 +187,10 @@ export async function submitAssessmentToAirtable(
   }
 
   // Handle text fields - only add if non-empty
-  if (actionPlanning?.quickWins && actionPlanning?.quickWins.trim() !== "None") {
+  if (
+    actionPlanning?.quickWins &&
+    actionPlanning?.quickWins.trim() !== "None"
+  ) {
     fieldsToSubmit[FIELD_IDS.actionPlanning.quickWins] =
       actionPlanning?.quickWins;
   }
@@ -225,8 +233,9 @@ export async function submitAssessmentToAirtable(
   const apiUrl = process.env.AIRTABLE_API_URL || "https://api.airtable.com/v0";
   // Force enable typecast to help with field type conversion
   const typecast = true;
+  // Increase default timeout to 30 seconds to avoid abort errors
   const requestTimeoutMs = parseInt(
-    process.env.AIRTABLE_REQUEST_TIMEOUT_MS || "10000",
+    process.env.AIRTABLE_REQUEST_TIMEOUT_MS || "30000",
     10
   );
 
@@ -245,20 +254,44 @@ export async function submitAssessmentToAirtable(
   console.log("- API Key (first 5 chars):", apiKey.substring(0, 5) + "...");
 
   try {
-    const response = await fetch(`${apiUrl}/${baseId}/${tableId}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        records: [{ fields: fieldsToSubmit }],
-        typecast: typecast,
-      }),
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
+    // Add retry logic for more reliable submissions
+    let response: Response | undefined;
+    let retries = 2;
+    let success = false;
+    
+    while (retries >= 0 && !success) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
+        
+        response = await fetch(`${apiUrl}/${baseId}/${tableId}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            records: [{ fields: fieldsToSubmit }],
+            typecast: typecast,
+          }),
+          signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+        success = true;
+      } catch (err) {
+        if (retries === 0) throw err;
+        console.log(`Airtable request attempt failed, retrying... (${retries} attempts left)`);
+        retries--;
+        // Wait 1 second before retrying
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+    
+    // Make sure we have a response before proceeding
+    if (!response) {
+      throw new Error("Failed to get a response from Airtable after multiple attempts");
+    }
 
     if (!response.ok) {
       const errorData = await response.json();

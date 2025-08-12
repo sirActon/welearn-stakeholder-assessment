@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import type { AssessmentData, Results } from "@/app/page"
 
@@ -21,44 +21,8 @@ const sectionNames = {
   culture: "Culture and Change Readiness",
 }
 
-const recommendations = {
-  "Reactive": {
-    title: "Building Your Foundation",
-    items: [
-      "Develop a formal learning strategy document",
-      "Secure leadership buy-in and support",
-      "Establish basic learning processes and workflows",
-      "Begin tracking fundamental learning metrics",
-    ],
-  },
-  Operational: {
-    title: "Expanding Your Capabilities",
-    items: [
-      "Align learning initiatives with business objectives",
-      "Implement systematic measurement and evaluation",
-      "Develop a more diverse learning content portfolio",
-      "Strengthen manager engagement in learning",
-    ],
-  },
-  Strategic: {
-    title: "Driving Innovation",
-    items: [
-      "Experiment with emerging learning technologies",
-      "Develop predictive analytics capabilities",
-      "Create personalized learning experiences",
-      "Build a culture of continuous learning",
-    ],
-  },
-  Transformational: {
-    title: "Leading the Way",
-    items: [
-      "Share best practices with the industry",
-      "Mentor other organizations in their learning journey",
-      "Continue pushing the boundaries of learning innovation",
-      "Maintain your competitive advantage through learning",
-    ],
-  },
-}
+// Import the recommendations from the dedicated file
+import { maturityLevelRecommendations, getSectionRecommendation, sectionKeyToRecommendationKey } from '@/lib/recommendations';
 
 // PDF Download functionality will be implemented in a simpler way to avoid SSR issues
 
@@ -70,7 +34,16 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
   })
 
   const getRecommendations = () => {
-    return recommendations[results.maturityLevel as keyof typeof recommendations] || recommendations["Reactive"]
+    return maturityLevelRecommendations[results.maturityLevel as keyof typeof maturityLevelRecommendations] || maturityLevelRecommendations["Reactive"]
+  }
+  
+  // Get section-specific recommendations based on scores
+  const getSectionSpecificRecommendations = () => {
+    return Object.keys(results.sectionScores).map(sectionKey => ({
+      section: sectionNames[sectionKey as keyof typeof sectionNames] || sectionKey,
+      score: results.sectionScores[sectionKey],
+      recommendation: getSectionRecommendation(sectionKey, results.sectionScores[sectionKey])
+    })).filter(item => item.recommendation);
   }
 
   return (
@@ -267,16 +240,43 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
           </Card>
         )}
 
-        {/* Recommendations */}
+        {/* Section-Specific Recommendations */}
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="text-2xl text-slate-800">
-              Recommended Next Steps: {getRecommendations().title}
+              Targeted Section Recommendations
+            </CardTitle>
+            <CardDescription>
+              Based on your scores in each area, here are specific improvements you can make:
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {getSectionSpecificRecommendations().map((item, index) => (
+                <div key={index} className="p-5 bg-slate-50 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold text-slate-800">{item.section}</h3>
+                    <div className="px-2 py-1 bg-coral-100 text-coral-700 rounded font-medium text-sm">
+                      Score: {item.score}/30
+                    </div>
+                  </div>
+                  <p className="text-slate-700">{item.recommendation}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* General Maturity Level Recommendations */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="text-2xl text-slate-800">
+              Maturity Level Next Steps: {getRecommendations().title}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
-              {getRecommendations().items.map((item, index) => (
+              {getRecommendations().items.map((item: string, index: number) => (
                 <div key={index} className="flex items-start space-x-3 p-4 bg-coral-50 rounded-lg">
                   <div className="w-6 h-6 bg-coral-400 text-white rounded-full flex items-center justify-center text-sm font-bold mt-0.5">
                     {index + 1}

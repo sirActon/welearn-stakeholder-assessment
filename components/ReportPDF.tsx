@@ -1,6 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 import type { AssessmentData, Results } from "@/app/page";
+import { maturityLevelRecommendations, getSectionRecommendation, sectionKeyToRecommendationKey } from '@/lib/recommendations';
 
 // Define styles
 const styles = StyleSheet.create({
@@ -184,44 +185,13 @@ const sectionNames = {
   culture: "Culture and Change Readiness",
 };
 
-// Recommendations
-const recommendations = {
-  "Reactive": {
-    title: "Building Your Foundation",
-    items: [
-      "Develop a formal learning strategy document",
-      "Secure leadership buy-in and support",
-      "Establish basic learning processes and workflows",
-      "Begin tracking fundamental learning metrics",
-    ],
-  },
-  "Operational": {
-    title: "Expanding Your Capabilities",
-    items: [
-      "Align learning initiatives with business objectives",
-      "Implement systematic measurement and evaluation",
-      "Develop a more diverse learning content portfolio",
-      "Strengthen manager engagement in learning",
-    ],
-  },
-  "Strategic": {
-    title: "Driving Innovation",
-    items: [
-      "Experiment with emerging learning technologies",
-      "Develop predictive analytics capabilities",
-      "Create personalized learning experiences",
-      "Build a culture of continuous learning",
-    ],
-  },
-  "Transformational": {
-    title: "Leading the Way",
-    items: [
-      "Share best practices with the industry",
-      "Mentor other organizations in their learning journey",
-      "Continue pushing the boundaries of learning innovation",
-      "Maintain your competitive advantage through learning",
-    ],
-  },
+// Get section-specific recommendations based on scores
+const getSectionSpecificRecommendations = (sectionScores: Record<string, number>) => {
+  return Object.keys(sectionScores).map(sectionKey => ({
+    section: sectionNames[sectionKey as keyof typeof sectionNames] || sectionKey,
+    score: sectionScores[sectionKey],
+    recommendation: getSectionRecommendation(sectionKey, sectionScores[sectionKey])
+  })).filter(item => item.recommendation);
 };
 
 interface ReportPDFProps {
@@ -230,7 +200,7 @@ interface ReportPDFProps {
 }
 
 const getRecommendations = (maturityLevel: string) => {
-  return recommendations[maturityLevel as keyof typeof recommendations] || recommendations["Reactive"];
+  return maturityLevelRecommendations[maturityLevel as keyof typeof maturityLevelRecommendations] || maturityLevelRecommendations["Reactive"];
 };
 
 const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
@@ -390,10 +360,28 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
           </View>
         )}
 
-        {/* Recommendations */}
+        {/* Section-Specific Recommendations */}
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>
-            Recommended Next Steps: {getRecommendations(results.maturityLevel).title}
+            Targeted Section Recommendations
+          </Text>
+          <View style={styles.recommendationsContainer}>
+            {getSectionSpecificRecommendations(results.sectionScores).map((item, index) => (
+              <View key={index} style={[styles.scoreItem, { marginBottom: 15 }]}>
+                <View style={styles.scoreHeader}>
+                  <Text style={styles.scoreName}>{item.section}</Text>
+                  <Text style={styles.scoreValue}>{item.score}/30</Text>
+                </View>
+                <Text style={{ fontSize: 10, marginTop: 5 }}>{item.recommendation}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        
+        {/* Maturity Level Recommendations */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>
+            Maturity Level Next Steps: {getRecommendations(results.maturityLevel).title}
           </Text>
           <View style={styles.recommendationsContainer}>
             {getRecommendations(results.maturityLevel).items.map((item, index) => (
