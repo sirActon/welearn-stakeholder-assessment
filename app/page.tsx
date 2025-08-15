@@ -1,27 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import LandingPage from "@/components/landing-page";
 import AssessmentFlow from "@/components/assessment-flow";
 import ResultsPage from "@/components/results-page";
 import PersonalizedReport from "@/components/personalized-report";
+import type { AssessmentData as SharedAssessmentData } from "@/components/types";
 
-export type AssessmentData = {
-  demographics: {
-    name: string;
-    email: string;
-    consent: boolean;
-  };
-  sections: {
-    [key: string]: {
-      questions: number[];
-    };
-  };
-  actionPlanning: {
-    [key: string]: string | undefined;
-  };
-  submissionId?: string; // Unique identifier for the assessment submission
-};
+// Re-export the shared AssessmentData to keep existing imports working
+export type AssessmentData = SharedAssessmentData;
 
 export type Results = {
   sectionScores: { [key: string]: number };
@@ -35,9 +22,19 @@ export default function Home() {
     "landing" | "assessment" | "results" | "report"
   >("landing");
   const [assessmentData, setAssessmentData] = useState<AssessmentData>({
-    demographics: { name: "", email: "", consent: false },
+    demographics: {
+      companySize: "",
+      industry: "",
+      industryOther: "",
+      hasStrategy: "",
+      strategyLastReviewed: "",
+      name: "",
+      company: "",
+      email: "",
+      consent: false,
+    },
     sections: {},
-    actionPlanning: {},
+    // actionPlanning is optional in the shared type
   });
   const [results, setResults] = useState<Results | null>(null);
 
@@ -100,9 +97,18 @@ export default function Home() {
   const handleBackToLanding = () => {
     setCurrentStep("landing");
     setAssessmentData({
-      demographics: { name: "", email: "", consent: false },
+      demographics: {
+        companySize: "",
+        industry: "",
+        industryOther: "",
+        hasStrategy: "",
+        strategyLastReviewed: "",
+        name: "",
+        company: "",
+        email: "",
+        consent: false,
+      },
       sections: {},
-      actionPlanning: {},
     });
     setResults(null);
   };
@@ -110,7 +116,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {currentStep === "landing" && (
-        <LandingPage onStartAssessment={handleStartAssessment} />
+        <Suspense fallback={null}>
+          <LandingPage onStartAssessment={handleStartAssessment} />
+        </Suspense>
       )}
       {currentStep === "assessment" && (
         <AssessmentFlow onComplete={handleAssessmentComplete} />
