@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useReducer, useCallback, useState, useEffect } from "react";
-import { shouldShowHeader } from "@/lib/header-utils";
+import { shouldShowHeader, isEmbedded } from "@/lib/header-utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { AssessmentData, Demographics, ActionPlanning, SectionResponse } from "./types";
@@ -14,6 +14,7 @@ import { Header } from "./Header";
 import { ProgressBar } from "./ProgressBar";
 import { submitAssessment } from "@/lib/client-api";
 import { generateSubmissionId } from "@/lib/id-generator";
+import { sections, likertOptions } from "@/lib/assessment-data";
 
 
 interface AssessmentFlowProps {
@@ -84,122 +85,12 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-const sections = [
-  {
-    key: "alignment",
-    title: "Alignment to Business Strategy",
-    description:
-      "Ensuring that learning initiatives directly support key organizational goals, priorities, and KPIs.",
-    questions: [
-      "Does your learning strategy directly support key business goals?",
-      "Are learning initiatives tied to performance metrics and KPIs?",
-      "Do you have regular conversations with executive stakeholders?",
-      "Is your learning strategy updated in response to changes in business direction?",
-      "Do business leaders see L&D as a strategic enabler?",
-    ],
-  },
-  {
-    key: "governance",
-    title: "Learning Governance",
-    description:
-      "Establishing decision-making structures and enterprise-level prioritization for learning investments and initiatives.",
-    questions: [
-      "Is there a cross-functional governance body overseeing learning strategy?",
-      "Are there clear decision rights and accountability structures?",
-      "Are learning initiatives prioritized at an enterprise level?",
-      "Are governance practices reviewed and updated regularly?",
-      "Are stakeholders from across the organization involved in governance?",
-    ],
-  },
-  {
-    key: "technology",
-    title: "Technology and Ecosystem Integration",
-    description:
-      "Connecting your learning platforms, tools, systems and data to create a seamless and scalable learning environment.",
-    questions: [
-      "Are your platforms integrated (LMS, LXP, content library, analytics)?",
-      "Is learner data used to drive personalization?",
-      "Do you have a strategy for AI and automation in learning?",
-      "Are learning technologies user-friendly and widely adopted?",
-      "Is there a roadmap for evolving your learning tech stack?",
-    ],
-  },
-  {
-    key: "content",
-    title: "Content and Experience Strategy",
-    description:
-      "Designing engaging, inclusive, and strategic learning experiences aligned to learner needs and business outcomes.",
-    questions: [
-      "Do you have a defined content strategy and taxonomy?",
-      "Is content regularly curated and updated?",
-      "Is learning accessible, inclusive, and engaging?",
-      "Is learning content aligned to critical skills and roles?",
-      "Is there a blend of modalities (video, social, interactive, etc.)?",
-    ],
-  },
-  {
-    key: "measurement",
-    title: "Measurement and Analytics",
-    description:
-      "Capturing learning outcomes and using data to drive decisions to inform strategy and decision making.",
-    questions: [
-      "Do you track more than just completions and satisfaction?",
-      "Are learning outcomes tied to business impact?",
-      "Do you have dashboards that inform strategic decisions?",
-      "Is data used to continuously improve programs?",
-      "Are learning metrics communicated clearly to leadership?",
-    ],
-  },
-  {
-    key: "culture",
-    title: "Culture and Change Readiness",
-    description:
-      "Embedding learning into the culture ensuring people are equipped and motivated to grow and adapt.",
-    questions: [
-      "Is learning embedded in the company culture?",
-      "Are leaders modeling continuous learning?",
-      "Is learning connected to performance and growth conversations?",
-      "Do employees feel supported and encouraged to learn?",
-      "Is learning a component of change initiatives and transformation?",
-    ],
-  },
-] as const;
-
-const likertOptions = [
-  {
-    value: 1,
-    label: "Not Yet in Place",
-    description: "No formal efforts or practices are currently in place.",
-  },
-  {
-    value: 2,
-    label: "Early Development",
-    description:
-      "Some initial steps have been taken, but efforts are limited or informal.",
-  },
-  {
-    value: 3,
-    label: "Inconsistent Practice",
-    description:
-      "Practices are present but applied unevenly across the organization.",
-  },
-  {
-    value: 4,
-    label: "Consistently Applied",
-    description:
-      "Practices are well established and applied reliably across teams or functions.",
-  },
-  {
-    value: 5,
-    label: "Fully Mature",
-    description:
-      "Practices are embedded, optimized, and inform ongoing strategic evolution.",
-  },
-];
+// sections and likertOptions are now imported from '@/lib/assessment-data'
 
 export default function AssessmentFlow({ onComplete, showHeader = false }: AssessmentFlowProps) {
   // Check URL parameters for header visibility using shared utility
   const [headerVisible, setHeaderVisible] = useState<boolean>(showHeader);
+  const embedded = isEmbedded();
   
   // Effect to check for URL parameters on client-side
   useEffect(() => {
@@ -207,7 +98,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     const showHeaderFromUrl = shouldShowHeader();
     
     // Update header visibility based on URL parameter or prop
-    setHeaderVisible(showHeaderFromUrl || showHeader);
+    setHeaderVisible(!isEmbedded() && (showHeaderFromUrl || showHeader));
   }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
   const totalSteps = 1 + sections.length + 1; // introduction + each dimension + demographics (action planning removed)
@@ -312,7 +203,9 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       {headerVisible && (
         <Header currentStep={state.currentStep} totalSteps={totalSteps} />
       )}
-      <ProgressBar currentStep={state.currentStep} totalSteps={totalSteps} />
+      {!embedded && (
+        <ProgressBar currentStep={state.currentStep} totalSteps={totalSteps} />
+      )}
 
       <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
         {state.currentStep === 0 && (
@@ -324,6 +217,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
             section={sections[state.currentStep - 1] as any}
             sectionData={state.sections[sections[state.currentStep - 1].key]}
             likertOptions={likertOptions}
+            hideDescriptors={embedded}
             onResponse={(qIndex, value) =>
               dispatch({
                 type: "updateSectionResponse",

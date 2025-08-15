@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import type { AssessmentData, Results } from "@/app/page"
+import { isEmbedded } from "@/lib/header-utils"
 
 interface PersonalizedReportProps {
   assessmentData: AssessmentData
@@ -36,6 +37,8 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
   const getRecommendations = () => {
     return maturityLevelRecommendations[results.maturityLevel as keyof typeof maturityLevelRecommendations] || maturityLevelRecommendations["Reactive"]
   }
+
+  const embedded = isEmbedded()
   
   // Get section-specific recommendations based on scores
   const getSectionSpecificRecommendations = () => {
@@ -288,27 +291,29 @@ export default function PersonalizedReport({ assessmentData, results, onBackToLa
           </CardContent>
         </Card>
 
-        {/* Call to Action */}
-        <Card className="bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-400/50 border-0 rounded-3xl overflow-hidden">
-          <CardContent className="p-12 lg:p-16 text-center">
-            <h3 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Take the Next Step?</h3>
-            <p className="text-xl mb-10 text-slate-300 leading-relaxed max-w-3xl mx-auto">
-              Connect with WeLearn to discuss how we can help you advance your learning strategy and build better humans
-              through learning.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-10 py-4 text-lg font-bold rounded-2xl shadow-xl shadow-coral-200 hover:shadow-2xl transition-all duration-200">
-                Schedule a Consultation
-              </Button>
-              <Button
-                variant="outline"
-                className="text-white border-white hover:bg-white hover:text-slate-900 px-10 py-4 text-lg font-bold bg-transparent rounded-2xl"
-              >
-                Learn More About WeLearn
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Call to Action (hidden in embed mode) */}
+        {!embedded && (
+          <Card className="bg-gradient-to-r from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-400/50 border-0 rounded-3xl overflow-hidden">
+            <CardContent className="p-12 lg:p-16 text-center">
+              <h3 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Take the Next Step?</h3>
+              <p className="text-xl mb-10 text-slate-300 leading-relaxed max-w-3xl mx-auto">
+                Connect with WeLearn to discuss how we can help you advance your learning strategy and build better humans
+                through learning.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-10 py-4 text-lg font-bold rounded-2xl shadow-xl shadow-coral-200 hover:shadow-2xl transition-all duration-200">
+                  Schedule a Consultation
+                </Button>
+                <Button
+                  variant="outline"
+                  className="text-white border-white hover:bg-white hover:text-slate-900 px-10 py-4 text-lg font-bold bg-transparent rounded-2xl"
+                >
+                  Learn More About WeLearn
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </main>
 
       {/* Footer */}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { shouldShowHeader } from "@/lib/header-utils";
+import { useSearchParams } from "next/navigation";
 
 interface LandingPageProps {
   onStartAssessment: () => void;
@@ -11,6 +12,8 @@ interface LandingPageProps {
 
 export default function LandingPage({ onStartAssessment }: LandingPageProps) {
   const [showHeader, setShowHeader] = useState(false);
+  const searchParams = useSearchParams();
+  const isEmbedded = searchParams.get("embed") === "true";
 
   useEffect(() => {
     setShowHeader(shouldShowHeader());
@@ -78,55 +81,67 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
               your next steps.
             </p>
 
-            <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 p-10 lg:p-16 mb-20 border border-slate-100">
-              <div className="grid lg:grid-cols-3 gap-12 mb-12">
-                <div className="text-center group">
-                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-coral-600">1</span>
+            {!isEmbedded ? (
+              <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 p-10 lg:p-16 mb-20 border border-slate-100">
+                <div className="grid lg:grid-cols-3 gap-12 mb-12">
+                  <div className="text-center group">
+                    <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                      <span className="text-3xl font-bold text-coral-600">1</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">
+                      Complete Assessment
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Answer questions across 6 key areas of learning strategy
+                      maturity
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Complete Assessment
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Answer questions across 6 key areas of learning strategy
-                    maturity
-                  </p>
+
+                  <div className="text-center group">
+                    <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                      <span className="text-3xl font-bold text-coral-600">2</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">
+                      Get Your Score
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Receive your maturity level and detailed performance
+                      breakdown
+                    </p>
+                  </div>
+
+                  <div className="text-center group">
+                    <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
+                      <span className="text-3xl font-bold text-coral-600">3</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">
+                      Take Action
+                    </h3>
+                    <p className="text-slate-600 leading-relaxed">
+                      Use personalized insights to advance your learning strategy
+                    </p>
+                  </div>
                 </div>
 
-                <div className="text-center group">
-                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-coral-600">2</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Get Your Score
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Receive your maturity level and detailed performance
-                    breakdown
-                  </p>
-                </div>
-
-                <div className="text-center group">
-                  <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-3xl font-bold text-coral-600">3</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-4">
-                    Take Action
-                  </h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Use personalized insights to advance your learning strategy
-                  </p>
-                </div>
+                <Button
+                  onClick={onStartAssessment}
+                  className="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl shadow-rose-200 hover:shadow-2xl hover:shadow-rose-300 transition-all duration-300 hover:scale-105"
+                  size="lg"
+                >
+                  Start Your Assessment
+                </Button>
               </div>
-
-              <Button
-                onClick={onStartAssessment}
-                className="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl shadow-rose-200 hover:shadow-2xl hover:shadow-rose-300 transition-all duration-300 hover:scale-105"
-                size="lg"
-              >
-                Start Your Assessment
-              </Button>
-            </div>
+            ) : (
+              <div className="mb-20">
+                <Button
+                  onClick={onStartAssessment}
+                  className="bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white px-12 py-6 text-xl font-bold rounded-2xl shadow-xl shadow-rose-200 hover:shadow-2xl hover:shadow-rose-300 transition-all duration-300 hover:scale-105"
+                  size="lg"
+                >
+                  Start Your Assessment
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </main>
