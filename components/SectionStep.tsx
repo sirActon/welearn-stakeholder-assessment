@@ -37,20 +37,40 @@ export function SectionStep({
   return (
     <Card className="shadow-xl shadow-slate-200/50 border-0 rounded-3xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-slate-50 to-coral-50 p-10">
-        <div className="mb-4">
-          <span className="inline-block px-3 py-1 bg-coral-100 text-coral-700 text-sm font-medium rounded-full mb-4">
-            Dimension {dimensionNumber}
-          </span>
-        </div>
-        <CardTitle className="text-3xl font-bold text-slate-900 mb-4">
-          {section.title}
-        </CardTitle>
-        <p className="text-lg text-slate-600 leading-relaxed mb-6">
-          {section.description}
-        </p>
+        {!hideDescriptors ? (
+          <>
+            <div className="mb-4">
+              <span className="inline-block px-3 py-1 bg-coral-100 text-coral-700 text-sm font-medium rounded-full mb-4">
+                Dimension {dimensionNumber}
+              </span>
+            </div>
+            <CardTitle className="text-3xl font-bold text-slate-900 mb-4">
+              {section.title}
+            </CardTitle>
+            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+              {section.description}
+            </p>
+          </>
+        ) : (
+          <>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="inline-block px-3 py-1 bg-coral-100 text-coral-700 text-sm font-medium rounded-full">
+                Dimension {dimensionNumber}
+              </span>
+              <CardTitle className="text-3xl font-bold text-slate-900 m-0">
+                {section.title}
+              </CardTitle>
+            </div>
+            <p className="text-lg text-slate-600 leading-relaxed mb-4">
+              {section.description}
+            </p>
+          </>
+        )}
         {!hideDescriptors ? (
           <div className="bg-slate-100 p-4 rounded-xl">
-            <p className="text-sm font-medium text-slate-700 mb-2">Rating Scale:</p>
+            <p className="text-sm font-medium text-slate-700 mb-2">
+              Rating Scale:
+            </p>
             {/* Grid layout that changes on mobile to stack each label with its number */}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-2 text-xs text-slate-600">
               {likertOptions.map((option) => (
@@ -79,13 +99,17 @@ export function SectionStep({
             </h4>
             {!hideDescriptors ? (
               <fieldset
-                className={`grid grid-cols-5 ${hideDescriptors ? "gap-3" : "gap-4"}`}
+                className={`grid grid-cols-5 ${
+                  hideDescriptors ? "gap-3" : "gap-4"
+                }`}
               >
                 <legend className="sr-only">Rate: {question}</legend>
                 {likertOptions.map((option) => (
                   <label
                     key={option.value}
-                    className={`flex flex-col items-center ${hideDescriptors ? "space-y-1" : "space-y-3"} cursor-pointer group`}
+                    className={`flex flex-col items-center ${
+                      hideDescriptors ? "space-y-1" : "space-y-3"
+                    } cursor-pointer group`}
                   >
                     <input
                       type="radio"
@@ -118,14 +142,20 @@ export function SectionStep({
                   onValueChange={(val) => onResponse(index, parseInt(val, 10))}
                 >
                   <SelectTrigger className="h-11 rounded-xl border-slate-300 tabular-nums text-left">
-                    <SelectValue className="tabular-nums" placeholder="Select a rating" />
+                    <SelectValue
+                      className="tabular-nums"
+                      placeholder="Select a rating"
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {likertOptions.map((opt) => {
                       const raw = `${opt.value} - ${opt.label}`;
                       const cleaned = raw
                         // Replace a wide range of unicode space/format chars with a normal space
-                        .replace(/[\u2000-\u200A\u00A0\u202F\u205F\u3000\u200B\u200E\u200F\u2060]/g, " ")
+                        .replace(
+                          /[\u2000-\u200A\u00A0\u202F\u205F\u3000\u200B\u200E\u200F\u2060]/g,
+                          " "
+                        )
                         .replace(/\s+/g, " ")
                         .trim();
                       return (
