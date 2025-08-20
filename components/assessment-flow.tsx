@@ -221,6 +221,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
 
         {state.currentStep > 0 && state.currentStep <= sections.length && (
           <SectionStep
+            key={sections[state.currentStep - 1].key}
             section={sections[state.currentStep - 1] as any}
             sectionData={state.sections[sections[state.currentStep - 1].key]}
             likertOptions={likertOptions}

@@ -1,19 +1,14 @@
 // components/SectionStep.tsx
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import type { SectionResponse } from "./types";
 import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 interface SectionDefinition {
   key: string;
@@ -69,88 +64,80 @@ export function SectionStep({
               ))}
             </div>
           </div>
-        ) : (
-          <div className="flex justify-center">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <button className="text-sm text-slate-600 underline hover:text-slate-900">
-                  What do the numbers mean?
-                </button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Rating Scale</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Understanding the 1–5 scale used for each question.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <div className="space-y-3 text-left mt-2">
-                  {likertOptions.map((option) => (
-                    <div key={option.value}>
-                      <div className="font-medium text-slate-800">
-                        {option.value} = {option.label}
-                      </div>
-                      <div className="text-slate-600 text-xs leading-relaxed">
-                        {option.description}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Close</AlertDialogCancel>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        )}
+        ) : null}
       </CardHeader>
       <CardContent
         className={`p-10 ${hideDescriptors ? "space-y-8" : "space-y-12"}`}
       >
         {section.questions.map((question, index) => (
           <div
-            key={index}
+            key={`${section.key}-${index}`}
             className={hideDescriptors ? "space-y-4" : "space-y-6"}
           >
             <h4 className="text-lg font-semibold text-slate-900 leading-relaxed">
               {question}
             </h4>
-            <fieldset
-              className={`grid grid-cols-5 ${
-                hideDescriptors ? "gap-3" : "gap-4"
-              }`}
-            >
-              <legend className="sr-only">Rate: {question}</legend>
-              {likertOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className={`flex flex-col items-center ${
-                    hideDescriptors ? "space-y-1" : "space-y-3"
-                  } cursor-pointer group`}
-                >
-                  <input
-                    type="radio"
-                    aria-label={option.label}
-                    name={`section-${section.key}-question-${index}`}
-                    value={option.value}
-                    checked={sectionData?.questions?.[index] === option.value}
-                    onChange={() => onResponse(index, option.value)}
-                    className="w-5 h-5 text-coral-500 focus:ring-coral-400 focus:ring-2"
-                  />
-                  <div className="text-center">
-                    <span className="text-lg font-bold text-slate-800 block">
-                      {option.value}
-                    </span>
-                    {!hideDescriptors && (
+            {!hideDescriptors ? (
+              <fieldset
+                className={`grid grid-cols-5 ${hideDescriptors ? "gap-3" : "gap-4"}`}
+              >
+                <legend className="sr-only">Rate: {question}</legend>
+                {likertOptions.map((option) => (
+                  <label
+                    key={option.value}
+                    className={`flex flex-col items-center ${hideDescriptors ? "space-y-1" : "space-y-3"} cursor-pointer group`}
+                  >
+                    <input
+                      type="radio"
+                      aria-label={option.label}
+                      name={`section-${section.key}-question-${index}`}
+                      value={option.value}
+                      checked={sectionData?.questions?.[index] === option.value}
+                      onChange={() => onResponse(index, option.value)}
+                      className="w-5 h-5 text-coral-500 focus:ring-coral-400 focus:ring-2"
+                    />
+                    <div className="text-center">
+                      <span className="text-lg font-bold text-slate-800 block">
+                        {option.value}
+                      </span>
                       <span className="text-xs text-slate-600 group-hover:text-slate-900 transition-colors leading-tight px-1 hidden md:block">
-                        {/* Hide descriptors on mobile devices */}
                         {option.label}
                       </span>
-                    )}
-                  </div>
-                </label>
-              ))}
-            </fieldset>
+                    </div>
+                  </label>
+                ))}
+              </fieldset>
+            ) : (
+              <div className="max-w-sm">
+                <Select
+                  value={
+                    sectionData?.questions?.[index] !== undefined
+                      ? String(sectionData?.questions?.[index])
+                      : undefined
+                  }
+                  onValueChange={(val) => onResponse(index, parseInt(val, 10))}
+                >
+                  <SelectTrigger className="h-11 rounded-xl border-slate-300 tabular-nums text-left">
+                    <SelectValue className="tabular-nums" placeholder="Select a rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {likertOptions.map((opt) => {
+                      const raw = `${opt.value} - ${opt.label}`;
+                      const cleaned = raw
+                        // Replace a wide range of unicode space/format chars with a normal space
+                        .replace(/[\u2000-\u200A\u00A0\u202F\u205F\u3000\u200B\u200E\u200F\u2060]/g, " ")
+                        .replace(/\s+/g, " ")
+                        .trim();
+                      return (
+                        <SelectItem key={opt.value} value={String(opt.value)}>
+                          {cleaned}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
           </div>
         ))}
 
