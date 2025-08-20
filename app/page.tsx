@@ -5,6 +5,7 @@ import LandingPage from "@/components/landing-page";
 import AssessmentFlow from "@/components/assessment-flow";
 import ResultsPage from "@/components/results-page";
 import PersonalizedReport from "@/components/personalized-report";
+import ThankYou from "@/components/thank-you";
 import type { AssessmentData as SharedAssessmentData } from "@/components/types";
 
 // Re-export the shared AssessmentData to keep existing imports working
@@ -19,7 +20,7 @@ export type Results = {
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState<
-    "landing" | "assessment" | "results" | "report"
+    "landing" | "assessment" | "results" | "report" | "thanks"
   >("landing");
   const [assessmentData, setAssessmentData] = useState<AssessmentData>({
     demographics: {
@@ -45,7 +46,14 @@ export default function Home() {
   const handleAssessmentComplete = (data: AssessmentData) => {
     setAssessmentData(data);
 
-    // Calculate results
+    // Company mode: show Thank You page and do not compute/display report
+    if (data.companyRecordId) {
+      setResults(null);
+      setCurrentStep("thanks");
+      return;
+    }
+
+    // Calculate results for individual mode
     const sectionScores: { [key: string]: number } = {};
     let totalScore = 0;
 
@@ -129,6 +137,9 @@ export default function Home() {
           onViewReport={handleViewReport}
           onBackToLanding={handleBackToLanding}
         />
+      )}
+      {currentStep === "thanks" && (
+        <ThankYou onBackToLanding={handleBackToLanding} />
       )}
       {currentStep === "report" && results && (
         <PersonalizedReport

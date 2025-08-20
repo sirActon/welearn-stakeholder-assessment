@@ -103,6 +103,11 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
   const [state, dispatch] = useReducer(reducer, initialState);
   const totalSteps = 1 + sections.length + 1; // introduction + each dimension + demographics (action planning removed)
 
+  // Read optional company record ID from URL (?company=<recordId>)
+  const companyRecordId = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('company') || undefined
+    : undefined;
+
   const goNext = useCallback(() => {
     if (state.currentStep < totalSteps - 1) {
       dispatch({ type: "setStep", step: state.currentStep + 1 });
@@ -173,6 +178,8 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
         ),
         // Action planning removed
         submissionId, // Add the submission ID
+        // Include company linkage if provided via URL
+        ...(companyRecordId ? { companyRecordId } : {}),
       };
       
       // Submit to Airtable database
@@ -196,7 +203,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
     } finally {
       setIsSubmitting(false);
     }
-  }, [state, onComplete]);
+  }, [state, onComplete, companyRecordId]);
 
   return (
     <div className="min-h-screen bg-gray-50">

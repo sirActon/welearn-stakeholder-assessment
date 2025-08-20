@@ -1,207 +1,275 @@
-import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
+import React from "react";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
 import type { AssessmentData, Results } from "@/app/page";
-import { maturityLevelRecommendations, getSectionRecommendation, sectionKeyToRecommendationKey } from '@/lib/recommendations';
+import {
+  maturityLevelRecommendations,
+  getSectionRecommendation,
+} from "@/lib/recommendations";
 
-// Define styles
-const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-    backgroundColor: '#ffffff',
-    fontFamily: 'Helvetica',
-  },
-  header: {
-    flexDirection: 'row',
-    backgroundColor: '#1e293b',
-    color: 'white',
-    padding: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  headerText: {
-    fontSize: 12,
-    color: '#e2e8f0',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    borderRadius: 5,
-  },
-  sectionHeader: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
-    paddingBottom: 5,
-  },
-  maturityBox: {
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#f8fafc',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-  },
-  maturityTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  maturityLevel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#f97316',
-    marginBottom: 5,
-  },
-  maturityDescription: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  maturityModelContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    flexWrap: 'wrap',
-  },
-  maturityModelItem: {
-    width: '48%',
-    padding: 8,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    borderRadius: 5,
-    backgroundColor: '#f8fafc',
-  },
-  maturityModelItemActive: {
-    borderColor: '#f97316',
-    backgroundColor: '#fff7ed',
-  },
-  maturityModelItemHeader: {
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  maturityModelItemDescription: {
-    fontSize: 8,
-    color: '#64748b',
-    marginTop: 5,
-  },
-  sectionScoresContainer: {
-    marginVertical: 15,
-  },
-  scoreItem: {
-    marginBottom: 10,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    borderRadius: 5,
-  },
-  scoreHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  scoreName: {
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  scoreValue: {
-    fontSize: 12,
-    color: '#f97316',
-    fontWeight: 'bold',
-  },
-  progressBar: {
-    height: 5,
-    backgroundColor: '#e2e8f0',
-    borderRadius: 2,
-    marginTop: 5,
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#f97316',
-    borderRadius: 2,
-  },
-  reflectionItem: {
-    marginBottom: 10,
-  },
-  reflectionTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  reflectionContent: {
-    fontSize: 10,
-    backgroundColor: '#f8fafc',
-    padding: 8,
-    borderRadius: 5,
-  },
-  recommendationsContainer: {
-    marginVertical: 15,
-  },
-  recommendationItem: {
-    marginBottom: 8,
-    flexDirection: 'row',
-  },
-  recommendationBullet: {
-    width: 15,
-    fontSize: 12,
-  },
-  recommendationText: {
-    fontSize: 11,
-    flex: 1,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 30,
-    right: 30,
-    textAlign: 'center',
-    fontSize: 8,
-    color: '#94a3b8',
-    borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-    paddingTop: 10,
-  },
-});
+// --- Brand & tokens ---
+const BRAND = {
+  primary: "#eb9841", // WeLearn orange
+  accent: "#ee4255", // Optional CTA accent
+  bgSoft: "#f8fafc",
+  border: "#e2e8f0",
+  text: "#0f172a",
+  textMuted: "#64748b",
+  slate500: "#64748b",
+  slate600: "#475569",
+  slate400: "#94a3b8",
+};
 
-// Section names
+const LEVEL_COLORS: Record<string, string> = {
+  Reactive: "#dc2626",
+  Operational: "#f97316",
+  Strategic: "#2563eb",
+  Transformational: "#16a34a",
+};
+
+// --- Sections map ---
 const sectionNames = {
   alignment: "Alignment to Business Strategy",
   governance: "Learning Governance",
-  technology: "Technology and Ecosystem Integration",
-  content: "Content and Experience Strategy",
-  measurement: "Measurement and Analytics",
-  culture: "Culture and Change Readiness",
-};
+  technology: "Technology & Ecosystem Integration",
+  content: "Content & Experience Strategy",
+  measurement: "Measurement & Analytics",
+  culture: "Culture & Change Readiness",
+} as const;
 
-// Get section-specific recommendations based on scores
-const getSectionSpecificRecommendations = (sectionScores: Record<string, number>) => {
-  return Object.keys(sectionScores).map(sectionKey => ({
-    section: sectionNames[sectionKey as keyof typeof sectionNames] || sectionKey,
-    score: sectionScores[sectionKey],
-    recommendation: getSectionRecommendation(sectionKey, sectionScores[sectionKey])
-  })).filter(item => item.recommendation);
-};
+// --- Helpers ---
+const getRecommendations = (maturityLevel: string) =>
+  maturityLevelRecommendations[
+    maturityLevel as keyof typeof maturityLevelRecommendations
+  ] || maturityLevelRecommendations["Reactive"];
 
+const getSectionSpecificRecommendations = (
+  sectionScores: Record<string, number>
+) =>
+  Object.keys(sectionScores)
+    .map((key) => ({
+      section: sectionNames[key as keyof typeof sectionNames] || key,
+      score: sectionScores[key],
+      recommendation: getSectionRecommendation(key, sectionScores[key]),
+    }))
+    .filter((x) => x.recommendation);
+
+// --- Styles ---
+const styles = StyleSheet.create({
+  page: {
+    paddingTop: 24,
+    paddingBottom: 48,
+    paddingHorizontal: 32,
+    backgroundColor: "#ffffff",
+    fontFamily: "Helvetica",
+  },
+
+  // Header / Hero
+  hero: {
+    padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    backgroundColor: "#fff",
+    marginBottom: 16,
+  },
+  heroRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  logo: {
+    width: 120,
+    height: (120 * 227) / 721, // ≈ 38
+  },
+  heroMeta: { fontSize: 9, color: BRAND.textMuted },
+  titleBlock: { marginTop: 8 },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: BRAND.text,
+    textAlign: "left",
+  },
+  subtitle: { fontSize: 10, color: BRAND.textMuted, marginTop: 4 },
+
+  // Generic card section
+  section: {
+    marginTop: 14,
+    padding: 14,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    backgroundColor: "#fff",
+  },
+  sectionHeader: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: BRAND.text,
+    marginBottom: 10,
+    paddingBottom: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: BRAND.border,
+  },
+
+  // Two-column row (when space allows)
+  twoCol: {
+    flexDirection: "row",
+    gap: 12,
+    flexWrap: "wrap",
+  },
+  col: { flexGrow: 1, flexBasis: "48%" },
+
+  // Participant
+  field: { marginBottom: 6 },
+  label: { fontSize: 9, color: BRAND.slate600, marginBottom: 2 },
+  value: { fontSize: 10, color: BRAND.text },
+
+  // Maturity
+  maturityWrap: {
+    backgroundColor: BRAND.bgSoft,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    padding: 12,
+  },
+  scoreRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  scoreText: { fontSize: 12, fontWeight: "bold", color: BRAND.text },
+  levelPill: {
+    fontSize: 10,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    color: "#111827",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: BRAND.border,
+  },
+  maturityDesc: {
+    fontSize: 10,
+    color: BRAND.text,
+    marginTop: 8,
+    lineHeight: 1.4,
+  },
+
+  modelGrid: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 10,
+  },
+  modelItem: {
+    flexBasis: "48%",
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    padding: 10,
+  },
+  modelItemActive: {
+    borderColor: BRAND.primary,
+    backgroundColor: "#fff7ed",
+  },
+  modelTitle: { fontSize: 10, fontWeight: "bold" },
+  modelHint: {
+    fontSize: 8,
+    color: BRAND.textMuted,
+    marginTop: 4,
+    lineHeight: 1.35,
+  },
+
+  // Scores
+  scoreCard: {
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 8,
+    backgroundColor: "#fff",
+  },
+  scoreHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  scoreName: { fontSize: 11, fontWeight: "bold", color: BRAND.text },
+  scoreValue: { fontSize: 11, fontWeight: "bold", color: BRAND.primary },
+  bar: { height: 6, borderRadius: 3, backgroundColor: "#e5e7eb" },
+  barFill: { height: "100%", borderRadius: 3, backgroundColor: BRAND.primary },
+
+  // Reflections
+  reflItem: { marginBottom: 10 },
+  reflTitle: {
+    fontSize: 11,
+    fontWeight: "bold",
+    marginBottom: 4,
+    color: BRAND.text,
+  },
+  reflBody: {
+    fontSize: 10,
+    color: BRAND.text,
+    backgroundColor: BRAND.bgSoft,
+    padding: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    lineHeight: 1.35,
+  },
+
+  // Recommendations
+  recCard: {
+    borderWidth: 1,
+    borderColor: BRAND.border,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#fff",
+  },
+  recTitleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  recTitle: { fontSize: 11, fontWeight: "bold", color: BRAND.text },
+  recScore: { fontSize: 10, fontWeight: "bold", color: BRAND.primary },
+  recText: { fontSize: 10, color: BRAND.text, lineHeight: 1.35 },
+
+  // Bulleted list for maturity next steps
+  bulletRow: { flexDirection: "row", gap: 6, marginBottom: 6 },
+  bulletIdx: { width: 12, fontSize: 10, color: BRAND.textMuted },
+  bulletText: { fontSize: 10, flex: 1, color: BRAND.text, lineHeight: 1.35 },
+
+  // Footer with page numbers
+  footer: {
+    position: "absolute",
+    left: 32,
+    right: 32,
+    bottom: 24,
+    textAlign: "center",
+    fontSize: 8,
+    color: BRAND.slate400,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: BRAND.border,
+  },
+});
+
+// --- Component ---
 interface ReportPDFProps {
   assessmentData: AssessmentData;
   results: Results;
 }
-
-const getRecommendations = (maturityLevel: string) => {
-  return maturityLevelRecommendations[maturityLevel as keyof typeof maturityLevelRecommendations] || maturityLevelRecommendations["Reactive"];
-};
 
 const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
@@ -209,194 +277,236 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
     month: "long",
     day: "numeric",
   });
+  const currentYear = new Date().getFullYear();
+
+  const levelColor = LEVEL_COLORS[results.maturityLevel] || BRAND.primary;
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>WELEARN</Text>
-          <Text style={styles.headerText}>Generated on {currentDate}</Text>
+        {/* HERO */}
+        <View style={styles.hero}>
+          <View style={styles.heroRow}>
+            <Image style={styles.logo} src="/logo.jpg" />
+            <Text style={styles.heroMeta}>Generated on {currentDate}</Text>
+          </View>
+          <View style={styles.titleBlock}>
+            <Text style={styles.title}>Learning Strategy Scorecard Report</Text>
+            <Text style={styles.subtitle}>
+              A snapshot of your learning maturity with targeted recommendations
+            </Text>
+          </View>
         </View>
 
-        {/* Title */}
-        <Text style={styles.title}>Learning Strategy Scorecard Report</Text>
-
-        {/* Participant Info */}
+        {/* PARTICIPANT */}
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Participant Information</Text>
-          {assessmentData.demographics.name && (
-            <Text>Name: {assessmentData.demographics.name}</Text>
-          )}
-          {assessmentData.demographics.email && (
-            <Text>Email: {assessmentData.demographics.email}</Text>
-          )}
-          <Text>Submission ID: {assessmentData.submissionId || "fldu0yi0EKKvAH2gr"}</Text>
-          {/* Company information removed as it's not in the current type definition */}
+          <View style={styles.twoCol}>
+            <View style={styles.col}>
+              {assessmentData.demographics.name ? (
+                <View style={styles.field}>
+                  <Text style={styles.label}>Name</Text>
+                  <Text style={styles.value}>
+                    {assessmentData.demographics.name}
+                  </Text>
+                </View>
+              ) : null}
+              <View style={styles.field}>
+                <Text style={styles.label}>Submission ID</Text>
+                <Text style={styles.value}>
+                  {assessmentData.submissionId || "—"}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.col}>
+              {assessmentData.demographics.email ? (
+                <View style={styles.field}>
+                  <Text style={styles.label}>Email</Text>
+                  <Text style={styles.value}>
+                    {assessmentData.demographics.email}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          </View>
         </View>
 
-        {/* Maturity Level */}
+        {/* MATURITY */}
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Maturity Assessment</Text>
-          <View style={styles.maturityBox}>
-            <Text style={styles.maturityTitle}>
-              Overall Score: {results.totalScore}/150
-            </Text>
-            <Text style={styles.maturityLevel}>
-              Maturity Level: {results.maturityLevel}
-            </Text>
-            <Text style={styles.maturityDescription}>
+
+          <View style={styles.maturityWrap}>
+            <View style={styles.scoreRow}>
+              <Text style={styles.scoreText}>
+                Overall Score: {results.totalScore}/150
+              </Text>
+              <Text
+                style={[
+                  styles.levelPill,
+                  { borderColor: levelColor, color: levelColor },
+                ]}
+              >
+                {results.maturityLevel}
+              </Text>
+            </View>
+            <Text style={styles.maturityDesc}>
               {results.maturityDescription}
             </Text>
           </View>
 
-          {/* Maturity Model Explanation */}
-          <Text style={{ fontSize: 14, fontWeight: 'bold', marginTop: 10 }}>
-            Understanding the Maturity Model
-          </Text>
-          <View style={styles.maturityModelContainer}>
-            <View style={[
-              styles.maturityModelItem, 
-              results.maturityLevel === "Reactive" ? styles.maturityModelItemActive : {}
-            ]}>
-              <Text style={[styles.maturityModelItemHeader, { color: '#dc2626' }]}>
-                Reactive (0-74)
-              </Text>
-              <Text style={styles.maturityModelItemDescription}>
-                Basic learning activities with limited strategy
-              </Text>
-            </View>
-            <View style={[
-              styles.maturityModelItem,
-              results.maturityLevel === "Operational" ? styles.maturityModelItemActive : {}
-            ]}>
-              <Text style={[styles.maturityModelItemHeader, { color: '#f97316' }]}>
-                Operational (75-104)
-              </Text>
-              <Text style={styles.maturityModelItemDescription}>
-                Structured processes with some measurement
-              </Text>
-            </View>
-            <View style={[
-              styles.maturityModelItem,
-              results.maturityLevel === "Strategic" ? styles.maturityModelItemActive : {}
-            ]}>
-              <Text style={[styles.maturityModelItemHeader, { color: '#2563eb' }]}>
-                Strategic (105-129)
-              </Text>
-              <Text style={styles.maturityModelItemDescription}>
-                Aligned with business goals and data-driven
-              </Text>
-            </View>
-            <View style={[
-              styles.maturityModelItem,
-              results.maturityLevel === "Transformational" ? styles.maturityModelItemActive : {}
-            ]}>
-              <Text style={[styles.maturityModelItemHeader, { color: '#16a34a' }]}>
-                Transformational (130-150)
-              </Text>
-              <Text style={styles.maturityModelItemDescription}>
-                Innovation-driven with continuous improvement
-              </Text>
+          <View style={{ marginTop: 10 }}>
+            <Text
+              style={{ fontSize: 11, fontWeight: "bold", color: BRAND.text }}
+            >
+              Understanding the Maturity Model
+            </Text>
+
+            <View style={styles.modelGrid}>
+              {[
+                {
+                  label: "Reactive (30–74)",
+                  key: "Reactive",
+                  hint: "Learning is reactive, compliance-driven, and lacks strategic integration.",
+                },
+                {
+                  label: "Operational (75–104)",
+                  key: "Operational",
+                  hint: "Structured processes with some alignment to goals and measurement.",
+                },
+                {
+                  label: "Strategic (105–129)",
+                  key: "Strategic",
+                  hint: "Data-informed, aligned with business priorities and leadership support.",
+                },
+                {
+                  label: "Transformational (130–150)",
+                  key: "Transformational",
+                  hint: "Fully embedded, innovative, and business-driving strategy.",
+                },
+              ].map((m) => (
+                <View
+                  key={m.key}
+                  style={[
+                    styles.modelItem,
+                    results.maturityLevel === m.key
+                      ? styles.modelItemActive
+                      : {},
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.modelTitle,
+                      { color: LEVEL_COLORS[m.key] || BRAND.text },
+                    ]}
+                  >
+                    {m.label}
+                  </Text>
+                  <Text style={styles.modelHint}>{m.hint}</Text>
+                </View>
+              ))}
             </View>
           </View>
         </View>
 
-        {/* Section Scores */}
+        {/* SECTION SCORES */}
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Section Scores</Text>
-          <View style={styles.sectionScoresContainer}>
-            {Object.entries(results.sectionScores).map(([sectionKey, score]) => (
-              <View key={sectionKey} style={styles.scoreItem}>
-                <View style={styles.scoreHeader}>
-                  <Text style={styles.scoreName}>
-                    {sectionNames[sectionKey as keyof typeof sectionNames]}
-                  </Text>
-                  <Text style={styles.scoreValue}>{score}/25</Text>
-                </View>
-                <View style={styles.progressBar}>
-                  <View 
-                    style={[
-                      styles.progressFill, 
-                      { width: `${(score / 25) * 100}%` }
-                    ]}
-                  />
-                </View>
+          {Object.entries(results.sectionScores).map(([sectionKey, score]) => (
+            <View key={sectionKey} style={styles.scoreCard}>
+              <View style={styles.scoreHeader}>
+                <Text style={styles.scoreName}>
+                  {sectionNames[sectionKey as keyof typeof sectionNames]}
+                </Text>
+                <Text style={styles.scoreValue}>{score}/25</Text>
               </View>
-            ))}
-          </View>
+              <View style={styles.bar}>
+                <View
+                  style={[styles.barFill, { width: `${(score / 25) * 100}%` }]}
+                />
+              </View>
+            </View>
+          ))}
         </View>
 
-        {/* Reflections */}
+        {/* REFLECTIONS */}
         {(assessmentData.actionPlanning?.improvementArea ||
           assessmentData.actionPlanning?.biggestChallenge ||
           assessmentData.actionPlanning?.successVision) && (
           <View style={styles.section}>
             <Text style={styles.sectionHeader}>Your Reflections</Text>
-            {assessmentData.actionPlanning?.improvementArea && (
-              <View style={styles.reflectionItem}>
-                <Text style={styles.reflectionTitle}>Area for Improvement</Text>
-                <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning?.improvementArea}
+
+            {assessmentData.actionPlanning?.improvementArea ? (
+              <View style={styles.reflItem}>
+                <Text style={styles.reflTitle}>Area for Improvement</Text>
+                <Text style={styles.reflBody}>
+                  {assessmentData.actionPlanning.improvementArea}
                 </Text>
               </View>
-            )}
-            {assessmentData.actionPlanning?.biggestChallenge && (
-              <View style={styles.reflectionItem}>
-                <Text style={styles.reflectionTitle}>Biggest Challenge</Text>
-                <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning?.biggestChallenge}
+            ) : null}
+
+            {assessmentData.actionPlanning?.biggestChallenge ? (
+              <View style={styles.reflItem}>
+                <Text style={styles.reflTitle}>Biggest Challenge</Text>
+                <Text style={styles.reflBody}>
+                  {assessmentData.actionPlanning.biggestChallenge}
                 </Text>
               </View>
-            )}
-            {assessmentData.actionPlanning?.successVision && (
-              <View style={styles.reflectionItem}>
-                <Text style={styles.reflectionTitle}>Vision of Success</Text>
-                <Text style={styles.reflectionContent}>
-                  {assessmentData.actionPlanning?.successVision}
+            ) : null}
+
+            {assessmentData.actionPlanning?.successVision ? (
+              <View style={styles.reflItem}>
+                <Text style={styles.reflTitle}>Vision of Success</Text>
+                <Text style={styles.reflBody}>
+                  {assessmentData.actionPlanning.successVision}
                 </Text>
               </View>
-            )}
+            ) : null}
           </View>
         )}
 
-        {/* Section-Specific Recommendations */}
+        {/* TARGETED SECTION RECOMMENDATIONS */}
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>
             Targeted Section Recommendations
           </Text>
-          <View style={styles.recommendationsContainer}>
-            {getSectionSpecificRecommendations(results.sectionScores).map((item, index) => (
-              <View key={index} style={[styles.scoreItem, { marginBottom: 15 }]}>
-                <View style={styles.scoreHeader}>
-                  <Text style={styles.scoreName}>{item.section}</Text>
-                  <Text style={styles.scoreValue}>{item.score}/30</Text>
+          {getSectionSpecificRecommendations(results.sectionScores).map(
+            (item, idx) => (
+              <View key={idx} style={styles.recCard}>
+                <View style={styles.recTitleRow}>
+                  <Text style={styles.recTitle}>{item.section}</Text>
+                  {/* NOTE: corrected denominator to /25 for section scores */}
+                  <Text style={styles.recScore}>{item.score}/25</Text>
                 </View>
-                <Text style={{ fontSize: 10, marginTop: 5 }}>{item.recommendation}</Text>
+                <Text style={styles.recText}>{item.recommendation}</Text>
               </View>
-            ))}
-          </View>
-        </View>
-        
-        {/* Maturity Level Recommendations */}
-        <View style={styles.section}>
-          <Text style={styles.sectionHeader}>
-            Maturity Level Next Steps: {getRecommendations(results.maturityLevel).title}
-          </Text>
-          <View style={styles.recommendationsContainer}>
-            {getRecommendations(results.maturityLevel).items.map((item, index) => (
-              <View key={index} style={styles.recommendationItem}>
-                <Text style={styles.recommendationBullet}>{index + 1}.</Text>
-                <Text style={styles.recommendationText}>{item}</Text>
-              </View>
-            ))}
-          </View>
+            )
+          )}
         </View>
 
-        {/* Footer */}
-        <Text style={styles.footer}>
-          © 2024 WeLearn. Building Better Humans Through Learning. This report is confidential and intended solely for the named recipient.
-        </Text>
+        {/* MATURITY-LEVEL NEXT STEPS */}
+        <View style={styles.section}>
+          <Text style={styles.sectionHeader}>
+            Maturity Level Next Steps:{" "}
+            {getRecommendations(results.maturityLevel).title}
+          </Text>
+          {getRecommendations(results.maturityLevel).items.map(
+            (t: string, i: number) => (
+              <View key={i} style={styles.bulletRow}>
+                <Text style={styles.bulletIdx}>{i + 1}.</Text>
+                <Text style={styles.bulletText}>{t}</Text>
+              </View>
+            )
+          )}
+        </View>
+
+        {/* FOOTER WITH PAGE NUMBERS */}
+        <Text
+          style={styles.footer}
+          render={({ pageNumber, totalPages }) =>
+            `© ${currentYear} WeLearn — Building Better Humans Through Learning • Confidential • Page ${pageNumber} of ${totalPages}`
+          }
+          fixed
+        />
       </Page>
     </Document>
   );

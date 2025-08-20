@@ -82,6 +82,10 @@ const FIELD_IDS = {
     stakeholders: "fldTxUp9g9q6q1yDg",
     successMetrics: "fldlda1IgYKZTeZdT",
   },
+  links: {
+    // Linked Company field on Submissions table
+    company: "fldcHAx8IH10zvzpY",
+  },
 };
 
 export function calculateMaturityLevel(totalScore: number): string {
@@ -169,6 +173,12 @@ export async function submitAssessmentToAirtable(
   // Add submission ID to database
   fieldsToSubmit[FIELD_IDS.summary.submissionId] =
     assessmentData.submissionId || "fldu0yi0EKKvAH2gr";
+
+  // Include linked company if provided
+  if (assessmentData.companyRecordId) {
+    // Linked record fields accept an array of record IDs
+    fieldsToSubmit[FIELD_IDS.links.company] = [assessmentData.companyRecordId];
+  }
 
   // Add action planning fields if they exist
   // Handle multi-select fields - only add if there are non-empty values

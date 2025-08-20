@@ -29,4 +29,5 @@ export interface AssessmentData {
   sections: Record<string, SectionResponse>;
   actionPlanning?: ActionPlanning; // Made optional since we've removed the action planning step
   submissionId?: string; // Unique identifier for the assessment submission
+  companyRecordId?: string; // Optional linked Company record ID from URL (?company=)
 }
