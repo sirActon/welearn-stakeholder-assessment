@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +21,7 @@ interface PersonalizedReportProps {
   assessmentData: AssessmentData;
   results: Results;
   onBackToLanding: () => void;
+  onAcknowledgeComplete?: () => void;
 }
 
 const sectionNames = {
@@ -36,6 +37,7 @@ export default function PersonalizedReport({
   assessmentData,
   results,
   onBackToLanding,
+  onAcknowledgeComplete,
 }: PersonalizedReportProps) {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -43,7 +45,12 @@ export default function PersonalizedReport({
     day: "numeric",
   });
 
-  const embedded = isEmbedded();
+  const [mounted, setMounted] = useState(false);
+  const [embedded, setEmbedded] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    setEmbedded(isEmbedded());
+  }, []);
   const companyFromUrl =
     typeof window !== "undefined"
       ? new URLSearchParams(window.location.search).get("company")
@@ -103,13 +110,22 @@ export default function PersonalizedReport({
                   Download PDF
                 </Button>
               )}
-              <Button
-                variant="outline"
-                onClick={onBackToLanding}
-                className="px-5 sm:px-6 py-2.5 font-semibold rounded-xl"
-              >
-                New Assessment
-              </Button>
+              {!mounted ? null : embedded ? (
+                <Button
+                  className="px-5 sm:px-6 py-2.5 font-semibold rounded-xl bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white"
+                  onClick={() => onAcknowledgeComplete?.()}
+                >
+                  I’ve completed this assessment
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  onClick={onBackToLanding}
+                  className="px-5 sm:px-6 py-2.5 font-semibold rounded-xl"
+                >
+                  New Assessment
+                </Button>
+              )}
             </div>
           </div>
         </div>

@@ -4,11 +4,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import type { Results } from "@/app/page"
+import { isEmbedded } from "@/lib/header-utils"
+import { useEffect, useState } from "react"
 
 interface ResultsPageProps {
   results: Results
   onViewReport: () => void
   onBackToLanding: () => void
+  onAcknowledgeComplete?: () => void
 }
 
 const sectionNames = {
@@ -20,7 +23,7 @@ const sectionNames = {
   innovation: "Innovation & Future Readiness",
 }
 
-export default function ResultsPage({ results, onViewReport, onBackToLanding }: ResultsPageProps) {
+export default function ResultsPage({ results, onViewReport, onBackToLanding, onAcknowledgeComplete }: ResultsPageProps) {
   const getMaturityColor = (level: string) => {
     switch (level) {
       case "Ad Hoc":
@@ -36,6 +39,14 @@ export default function ResultsPage({ results, onViewReport, onBackToLanding }: 
     }
   }
 
+  const [mounted, setMounted] = useState(false)
+  const [embedded, setEmbedded] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+    setEmbedded(isEmbedded())
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -45,13 +56,22 @@ export default function ResultsPage({ results, onViewReport, onBackToLanding }: 
             <h1 className="text-3xl font-light text-slate-800 tracking-tight">
               WE<span className="text-coral-500">LEARN</span>
             </h1>
-            <Button
-              variant="outline"
-              onClick={onBackToLanding}
-              className="px-6 py-3 font-medium rounded-xl border-slate-300 hover:bg-slate-50 bg-transparent"
-            >
-              Start New Assessment
-            </Button>
+            {!mounted ? null : embedded ? (
+              <Button
+                onClick={() => onAcknowledgeComplete?.()}
+                className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-6 py-3 font-medium rounded-xl shadow-coral-200"
+              >
+                I’ve completed this assessment
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={onBackToLanding}
+                className="px-6 py-3 font-medium rounded-xl border-slate-300 hover:bg-slate-50 bg-transparent"
+              >
+                Start New Assessment
+              </Button>
+            )}
           </div>
         </div>
       </header>

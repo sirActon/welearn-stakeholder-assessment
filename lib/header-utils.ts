@@ -5,18 +5,13 @@
  * @returns boolean indicating whether header should be displayed
  */
 export function shouldShowHeader(): boolean {
-  // Only run on client side
   if (typeof window === 'undefined') return false;
-  
-  // Check for URL parameter
   const urlParams = new URLSearchParams(window.location.search);
-  const embedParam = urlParams.get('embed');
+  const embedParam = urlParams.get('embed') ?? urlParams.get('embedded');
   const headerParam = urlParams.get('showHeader');
-  
-  // If embedded, never show header
-  if (embedParam === 'true') return false;
-  
-  return headerParam === 'true';
+
+  if (truthyParam(embedParam)) return false;
+  return truthyParam(headerParam);
 }
 
 /**
@@ -25,5 +20,12 @@ export function shouldShowHeader(): boolean {
 export function isEmbedded(): boolean {
   if (typeof window === 'undefined') return false;
   const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('embed') === 'true';
+  const embedParam = urlParams.get('embed') ?? urlParams.get('embedded');
+  return truthyParam(embedParam);
+}
+
+function truthyParam(value: string | null): boolean {
+  if (!value) return false;
+  const v = value.trim().toLowerCase();
+  return v === 'true' || v === '1' || v === 'yes' || v === 'y' || v === 't';
 }

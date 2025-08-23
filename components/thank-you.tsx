@@ -1,15 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { isEmbedded } from "@/lib/header-utils";
 
 interface ThankYouProps {
   onBackToLanding: () => void;
 }
 
 export default function ThankYou({ onBackToLanding }: ThankYouProps) {
+  const [mounted, setMounted] = useState(false);
+  const [embedded, setEmbedded] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    setEmbedded(isEmbedded());
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-slate-200/50">
@@ -24,13 +31,17 @@ export default function ThankYou({ onBackToLanding }: ThankYouProps) {
                 priority
               />
             </div>
-            <Button
-              variant="outline"
-              onClick={onBackToLanding}
-              className="px-6 py-3 font-medium rounded-xl border-slate-300 hover:bg-slate-50 bg-transparent"
-            >
-              Start New Assessment
-            </Button>
+            {!mounted
+              ? null
+              : !embedded && (
+                  <Button
+                    variant="outline"
+                    onClick={onBackToLanding}
+                    className="px-6 py-3 font-medium rounded-xl border-slate-300 hover:bg-slate-50 bg-transparent"
+                  >
+                    Start New Assessment
+                  </Button>
+                )}
           </div>
         </div>
       </header>
@@ -43,21 +54,32 @@ export default function ThankYou({ onBackToLanding }: ThankYouProps) {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-10 text-slate-700 space-y-6 text-lg leading-relaxed">
-            <p>
-              We appreciate your time and perspective. Because this assessment
-              is being completed on behalf of your organization, your responses
-              will be combined with those of your colleagues to provide a
-              collective view.
-            </p>
-            <p>
-              Once the collection period ends, your organization's contact will
-              share a summary of the results along with key insights and
-              recommendations.
-            </p>
-            <p className="text-slate-500 text-base">
-              If you have any questions before then, please reach out to your
-              organization’s designated contact.
-            </p>
+            {!mounted ? null : embedded ? (
+              <>
+                <p>Thank you for completing the assessment.</p>
+                <p className="text-base text-slate-600">
+                  You can now continue with your assessment.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  We appreciate your time and perspective. Because this
+                  assessment is being completed on behalf of your organization,
+                  your responses will be combined with those of your colleagues
+                  to provide a collective view.
+                </p>
+                <p>
+                  Once the collection period ends, your organization's contact
+                  will share a summary of the results along with key insights
+                  and recommendations.
+                </p>
+                <p className="text-slate-500 text-base">
+                  If you have any questions before then, please reach out to
+                  your organization’s designated contact.
+                </p>
+              </>
+            )}
           </CardContent>
         </Card>
       </main>

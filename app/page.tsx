@@ -136,6 +136,7 @@ export default function Home() {
           results={results}
           onViewReport={handleViewReport}
           onBackToLanding={handleBackToLanding}
+          onAcknowledgeComplete={() => setCurrentStep("thanks")}
         />
       )}
       {currentStep === "thanks" && (
@@ -146,6 +147,7 @@ export default function Home() {
           assessmentData={assessmentData}
           results={results}
           onBackToLanding={handleBackToLanding}
+          onAcknowledgeComplete={() => setCurrentStep("thanks")}
         />
       )}
     </div>
