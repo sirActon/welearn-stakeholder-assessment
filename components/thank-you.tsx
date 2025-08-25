@@ -58,7 +58,7 @@ export default function ThankYou({ onBackToLanding }: ThankYouProps) {
               <>
                 <p>Thank you for completing the assessment.</p>
                 <p className="text-base text-slate-600">
-                  You can now continue with your assessment.
+                  You can now continue with the course.
                 </p>
               </>
             ) : (
