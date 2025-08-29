@@ -133,67 +133,7 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                   >
                     Start Your Assessment
                   </Button>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="px-6 py-3 font-semibold rounded-xl bg-black text-white hover:bg-black/90">
-                        Open Test Dialog
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="w-[95vw] sm:w-full sm:max-w-3xl h-[85vh] sm:h-[75vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle id="dialog-title">Dialog Testing</DialogTitle>
-                        <DialogDescription>
-                          This dialog is used to test desktop and mobile behavior and to validate accessibility (focus management, keyboard navigation, and screen reader announcements).
-                        </DialogDescription>
-                      </DialogHeader>
-                      {/* Accessible test content: first dimension questions */}
-                      {(() => {
-                        const first = sections[0];
-                        return (
-                          <form className="space-y-8" aria-labelledby="dialog-title">
-                            <div>
-                              <h2 className="text-xl font-semibold text-slate-900">{first.title}</h2>
-                              <p className="text-slate-600 mt-1">{first.description}</p>
-                            </div>
-                            <div className="space-y-6">
-                              {first.questions.map((q, qi) => {
-                                const name = `test-q-${qi}`;
-                                return (
-                                  <fieldset key={name} className="border rounded-xl p-4 sm:p-5">
-                                    <legend className="font-medium text-slate-900 mb-3">{q}</legend>
-                                    <div className="grid grid-cols-1 sm:grid-cols-5 gap-3" role="radiogroup" aria-label={q}>
-                                      {likertOptions.map((opt) => {
-                                        const id = `${name}-${opt.value}`;
-                                        return (
-                                          <div key={id} className="flex flex-col items-center text-center gap-2">
-                                            <input
-                                              id={id}
-                                              name={name}
-                                              type="radio"
-                                              value={opt.value}
-                                              className="h-5 w-5 text-rose-600 focus:ring-rose-600"
-                                            />
-                                            <label htmlFor={id} className="text-sm text-slate-800">
-                                              <span className="block font-medium">{opt.label}</span>
-                                            </label>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </fieldset>
-                                );
-                              })}
-                            </div>
-                            <div className="flex justify-end">
-                              <DialogClose asChild>
-                                <Button className="bg-black text-white hover:bg-black/90">Dismiss</Button>
-                              </DialogClose>
-                            </div>
-                          </form>
-                        );
-                      })()}
-                    </DialogContent>
-                  </Dialog>
+                  {/* Test dialog is only available in embed mode */}
                 </div>
               </div>
             ) : (
