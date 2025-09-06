@@ -444,14 +444,19 @@ export default function PersonalizedReport({
                 learning strategy and build better humans through learning.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-4 text-base lg:text-lg font-bold rounded-2xl shadow-lg shadow-coral-200 hover:shadow-xl transition-all">
-                  Schedule a Consultation
+                <Button asChild className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-4 text-base lg:text-lg font-bold rounded-2xl shadow-lg shadow-coral-200 hover:shadow-xl transition-all">
+                  <a href="https://calendly.com/seans-oxq/ss" target="_blank" rel="noopener noreferrer">
+                    Schedule a Consultation
+                  </a>
                 </Button>
                 <Button
+                  asChild
                   variant="outline"
-                  className="text-white border-white hover:bg-white hover:text-slate-900 px-8 py-4 text-base lg:text-lg font-bold rounded-2xl"
+                  className="text-coral-600 border-white hover:bg-white hover:text-slate-900 px-8 py-4 text-base lg:text-lg font-bold rounded-2xl"
                 >
-                  Learn More About WeLearn
+                  <a href="http://www.welearnls.com/" target="_blank" rel="noopener noreferrer">
+                    Learn More About WeLearn
+                  </a>
                 </Button>
               </div>
             </CardContent>
