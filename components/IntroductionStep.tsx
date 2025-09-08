@@ -19,8 +19,12 @@ export function IntroductionStep() {
           The Learning Strategy Scorecard is designed to help L&D leaders
           reflect on the strategic strength of their learning function. By
           evaluating your approach across six core dimensions, you'll gain
-          clarity on your current state—and where to focus your efforts for
+          clarity on your current state and where to focus your efforts for
           maximum impact.
+        </p>
+        <p className="text-slate-500 text-sm italic">
+          Note: Please respond with your organization’s current learning strategy
+          context in mind (e.g., priorities, scale, and constraints).
         </p>
       </div>
 

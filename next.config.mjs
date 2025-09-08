@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
@@ -10,6 +12,14 @@ const nextConfig = {
     unoptimized: true,
   },
   async headers() {
+    const scriptSrc = ["'self'", "'unsafe-inline'", "blob:"];
+    // WebAssembly usage in production (react-pdf) and webpack eval in dev
+    if (isProd) {
+      scriptSrc.push("'wasm-unsafe-eval'");
+    } else {
+      scriptSrc.push("'unsafe-eval'", "'wasm-unsafe-eval'");
+    }
+
     return [
       {
         source: '/(.*)',
@@ -20,7 +30,7 @@ const nextConfig = {
             // and enable blob/data usage required by @react-pdf/renderer in production
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:",
+              `script-src ${scriptSrc.join(' ')}`,
               "worker-src 'self' blob:",
               "connect-src 'self' https: blob: data:",
               "img-src 'self' https: data: blob:",

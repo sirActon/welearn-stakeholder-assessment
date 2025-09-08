@@ -26,33 +26,29 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="flex justify-between items-center py-6">
               <div className="flex items-center">
-                <Image
-                  src="/logo.jpg"
-                  alt="WeLearn Logo"
-                  width={225}
-                  height={75}
-                  className="object-contain"
-                  priority
-                />
+                <a href="https://welearnls.com/" aria-label="WeLearn Home">
+                  <Image
+                    src="/logo.jpg"
+                    alt="WeLearn Logo"
+                    width={225}
+                    height={75}
+                    className="object-contain"
+                    priority
+                  />
+                </a>
               </div>
               <nav className="hidden md:flex space-x-10">
                 <a
-                  href="#"
+                  href="https://welearnls.com/about-us/"
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
-                  About
+                  About Us
                 </a>
                 <a
-                  href="#"
+                  href="https://welearnls.com/contact-us/"
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
-                  Services
-                </a>
-                <a
-                  href="#"
-                  className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
-                >
-                  Contact
+                  Contact Us
                 </a>
               </nav>
             </div>

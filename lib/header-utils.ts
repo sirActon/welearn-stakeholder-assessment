@@ -10,8 +10,14 @@ export function shouldShowHeader(): boolean {
   const embedParam = urlParams.get('embed') ?? urlParams.get('embedded');
   const headerParam = urlParams.get('showHeader');
 
+  // Hide header when embedded
   if (truthyParam(embedParam)) return false;
-  return truthyParam(headerParam);
+
+  // If explicit showHeader is provided, respect it
+  if (headerParam !== null) return truthyParam(headerParam);
+
+  // Default: show header when not embedded
+  return true;
 }
 
 /**
