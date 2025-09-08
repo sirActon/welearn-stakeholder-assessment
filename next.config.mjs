@@ -20,7 +20,7 @@ const nextConfig = {
             // and enable blob/data usage required by @react-pdf/renderer in production
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' blob:",
+              "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' blob:",
               "worker-src 'self' blob:",
               "connect-src 'self' https: blob: data:",
               "img-src 'self' https: data: blob:",
