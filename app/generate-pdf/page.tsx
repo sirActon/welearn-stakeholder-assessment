@@ -30,6 +30,12 @@ function PDFGenerator() {
     results: Results;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Build absolute logo URL for the PDF (react-pdf prefers absolute URLs)
+  const siteUrl =
+    (typeof window !== "undefined" && window.location?.origin) ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://www.learningstrategyscorecard.com";
+  const logoSrc = `${siteUrl}/logo.jpg`;
 
   useEffect(() => {
     try {
@@ -83,27 +89,23 @@ function PDFGenerator() {
         </p>
         
         <div className="flex justify-center">
-          <PDFDownloadLink
-            document={
-              <ReportPDF
-                assessmentData={parsedData.assessmentData}
-                results={parsedData.results}
-              />
-            }
-            fileName={`WeLearn-Scorecard-${
-              parsedData.assessmentData.demographics.name || "Report"
-            }.pdf`}
-            className="inline-block"
-          >
-            {({ blob, url, loading, error }) => (
-              <Button
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
-                disabled={loading}
-              >
-                {loading ? "Preparing PDF..." : "Download PDF"}
-              </Button>
-            )}
-          </PDFDownloadLink>
+          <Button asChild className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg">
+            <PDFDownloadLink
+              document={
+                <ReportPDF
+                  assessmentData={parsedData.assessmentData}
+                  results={parsedData.results}
+                  logoSrc={logoSrc}
+                />
+              }
+              fileName={`WeLearn-Scorecard-${
+                parsedData.assessmentData.demographics.name || "Report"
+              }.pdf`}
+              className="inline-block"
+            >
+              {({ loading }) => (loading ? "Preparing PDF..." : "Download PDF")}
+            </PDFDownloadLink>
+          </Button>
         </div>
         
         <div className="mt-4 text-center">

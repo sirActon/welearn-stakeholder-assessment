@@ -269,9 +269,10 @@ const styles = StyleSheet.create({
 interface ReportPDFProps {
   assessmentData: AssessmentData;
   results: Results;
+  logoSrc?: string;
 }
 
-const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
+const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results, logoSrc }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -287,7 +288,7 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results }) => {
         {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroRow}>
-            <Image style={styles.logo} src="/logo.jpg" />
+            <Image style={styles.logo} src={logoSrc || "/logo.jpg"} />
             <Text style={styles.heroMeta}>Generated on {currentDate}</Text>
           </View>
           <View style={styles.titleBlock}>
