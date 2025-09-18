@@ -45,7 +45,7 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                   About Us
                 </a>
                 <a
-                  href="https://welearnls.com/contact-us/"
+                  href="https://welearnls.com/contact/"
                   className="text-slate-600 hover:text-slate-900 font-medium transition-colors"
                 >
                   Contact Us
@@ -82,7 +82,9 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                 <div className="grid lg:grid-cols-3 gap-12 mb-12">
                   <div className="text-center group">
                     <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                      <span className="text-3xl font-bold text-coral-600">1</span>
+                      <span className="text-3xl font-bold text-coral-600">
+                        1
+                      </span>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4">
                       Complete Assessment
@@ -95,7 +97,9 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
 
                   <div className="text-center group">
                     <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                      <span className="text-3xl font-bold text-coral-600">2</span>
+                      <span className="text-3xl font-bold text-coral-600">
+                        2
+                      </span>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4">
                       Get Your Score
@@ -108,13 +112,16 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
 
                   <div className="text-center group">
                     <div className="w-20 h-20 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:scale-105 transition-transform duration-200">
-                      <span className="text-3xl font-bold text-coral-600">3</span>
+                      <span className="text-3xl font-bold text-coral-600">
+                        3
+                      </span>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4">
                       Take Action
                     </h3>
                     <p className="text-slate-600 leading-relaxed">
-                      Use personalized insights to advance your learning strategy
+                      Use personalized insights to advance your learning
+                      strategy
                     </p>
                   </div>
                 </div>
