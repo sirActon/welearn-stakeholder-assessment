@@ -14,7 +14,9 @@ async function submitToHubSpot(
     const email = assessmentData.demographics?.email?.trim();
     if (!email) return { ok: false, skipped: true, reason: 'no-email' };
 
-    const name = assessmentData.demographics?.name || '';
+    const fullName = (assessmentData.demographics?.name || '').trim();
+    const [firstName, ...restName] = fullName.split(/\s+/);
+    const lastName = restName.join(' ');
     const company = assessmentData.demographics?.company || '';
 
     // Extract HubSpot tracking cookie (hubspotutk) if present
@@ -22,34 +24,49 @@ async function submitToHubSpot(
     const hutkMatch = cookieHeader.match(/hubspotutk=([^;]+)/);
     const hutk = hutkMatch ? decodeURIComponent(hutkMatch[1]) : undefined;
 
-    const referer = req.headers.get('referer') || undefined;
+    const referer = req.headers.get('referer') || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.learningstrategyscorecard.com';
 
-    const body = {
+    // Prepare fields using objectTypeId prefixes when the form expects multiple objects
+    const fields: Array<{ name: string; value: string }> = [
+      { name: '0-1/email', value: email },
+      ...(firstName ? [{ name: '0-1/firstname', value: firstName }] : []),
+      ...(lastName ? [{ name: '0-1/lastname', value: lastName }] : []),
+    ];
+
+    // Company name appears required based on error: "Required field '0-2/name' is missing"
+    // Provide a fallback if not supplied
+    const companyName = company || 'N/A';
+    fields.push({ name: '0-2/name', value: companyName });
+
+    const body: any = {
       submittedAt: Date.now(),
-      fields: [
-        { name: 'email', value: email },
-        ...(name ? [{ name: 'firstname', value: name }] : []),
-        ...(company ? [{ name: 'company', value: company }] : []),
-      ],
+      fields,
       context: {
         hutk,
         pageUri: referer,
         pageName: 'Learning Strategy Scorecard',
       },
-      legalConsentOptions: {
+    };
+
+    // Only include legal consent block if the user consented AND the form is GDPR-enabled
+    if (assessmentData.demographics?.consent && process.env.HUBSPOT_GDPR_ENABLED === 'true') {
+      body.legalConsentOptions = {
         consent: {
-          consentToProcess: Boolean(assessmentData.demographics?.consent),
+          consentToProcess: true,
           text: 'I agree to allow WeLearn to store and process my personal data.',
           communications: [
             {
-              value: Boolean(assessmentData.demographics?.consent),
-              subscriptionTypeId: 999, // Placeholder; not required but structure kept
+              value: true,
+              // If you have a real subscriptionTypeId, set it via env and include it; otherwise omit this field
+              ...(process.env.HUBSPOT_SUBSCRIPTION_TYPE_ID
+                ? { subscriptionTypeId: Number(process.env.HUBSPOT_SUBSCRIPTION_TYPE_ID) }
+                : {}),
               text: 'I agree to receive communications from WeLearn.'
             }
           ]
         }
-      }
-    } as any;
+      };
+    }
 
     const resp = await fetch(endpoint, {
       method: 'POST',
@@ -60,6 +77,15 @@ async function submitToHubSpot(
     });
 
     const data = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      console.warn('HubSpot error response', {
+        status: resp.status,
+        message: (data as any)?.message,
+        errors: (data as any)?.errors,
+        raw: data,
+        sentFields: fields,
+      });
+    }
     return { ok: resp.ok, status: resp.status, data };
   } catch (err: any) {
     return { ok: false, error: err?.message || 'unknown-error' };
@@ -90,6 +116,12 @@ export async function POST(request: Request) {
       hubspot = await submitToHubSpot(assessmentData, request);
       if (!hubspot?.ok) {
         console.warn('HubSpot submission failed or skipped:', hubspot);
+      } else {
+        // Success log without PII
+        console.info('HubSpot submission succeeded', {
+          status: hubspot.status,
+          ok: true,
+        });
       }
     }
     
