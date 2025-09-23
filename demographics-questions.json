@@ -1,0 +1,124 @@
+{
+  "title": "Demographics & Contextual Questions",
+  "description": "Questions used in the Demographics step. Dropdown questions include their valid option values.",
+  "questions": [
+    {
+      "id": "companySize",
+      "label": "What is your company size?",
+      "type": "select",
+      "optional": false,
+      "options": [
+        { "value": "1-50", "label": "1-50 employees" },
+        { "value": "51-200", "label": "51-200 employees" },
+        { "value": "201-500", "label": "201-500 employees" },
+        { "value": "501-1000", "label": "501-1000 employees" },
+        { "value": "1001-5000", "label": "1001-5000 employees" },
+        { "value": "5000+", "label": "5000+ employees" }
+      ]
+    },
+    {
+      "id": "industry",
+      "label": "What industry are you in?",
+      "type": "select",
+      "optional": false,
+      "options": [
+        { "value": "Accounting", "label": "Accounting" },
+        { "value": "Advertising & Marketing", "label": "Advertising & Marketing" },
+        { "value": "Agriculture", "label": "Agriculture" },
+        { "value": "Arts & Entertainment", "label": "Arts & Entertainment" },
+        { "value": "Automotive", "label": "Automotive" },
+        { "value": "Construction", "label": "Construction" },
+        { "value": "Consulting", "label": "Consulting" },
+        { "value": "Consumer Goods", "label": "Consumer Goods" },
+        { "value": "Education", "label": "Education" },
+        { "value": "Energy & Utilities", "label": "Energy & Utilities" },
+        { "value": "Engineering", "label": "Engineering" },
+        { "value": "Financial Services", "label": "Financial Services" },
+        { "value": "Food & Beverage", "label": "Food & Beverage" },
+        { "value": "Government", "label": "Government" },
+        { "value": "Healthcare & Medical", "label": "Healthcare & Medical" },
+        { "value": "Hospitality", "label": "Hospitality" },
+        { "value": "Information Technology (IT)", "label": "Information Technology (IT)" },
+        { "value": "Insurance", "label": "Insurance" },
+        { "value": "Legal Services", "label": "Legal Services" },
+        { "value": "Logistics & Transportation", "label": "Logistics & Transportation" },
+        { "value": "Manufacturing", "label": "Manufacturing" },
+        { "value": "Media & Publishing", "label": "Media & Publishing" },
+        { "value": "Nonprofit", "label": "Nonprofit" },
+        { "value": "Pharmaceuticals & Biotech", "label": "Pharmaceuticals & Biotech" },
+        { "value": "Professional Services", "label": "Professional Services" },
+        { "value": "Real Estate", "label": "Real Estate" },
+        { "value": "Retail & E-Commerce", "label": "Retail & E-Commerce" },
+        { "value": "Software & Internet", "label": "Software & Internet" },
+        { "value": "Telecommunications", "label": "Telecommunications" },
+        { "value": "Travel & Tourism", "label": "Travel & Tourism" },
+        { "value": "Veterinary & Pet Services", "label": "Veterinary & Pet Services" },
+        { "value": "Other", "label": "Other" }
+      ],
+      "followUps": [
+        {
+          "id": "industryOther",
+          "label": "Please specify your industry:",
+          "type": "text",
+          "optional": true,
+          "shownWhen": {
+            "field": "industry",
+            "anyOf": ["Other"]
+          }
+        }
+      ]
+    },
+    {
+      "id": "hasStrategy",
+      "label": "Do you have a formal learning strategy?",
+      "type": "select",
+      "optional": false,
+      "options": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" },
+        { "value": "in-development", "label": "In development" }
+      ]
+    },
+    {
+      "id": "strategyLastReviewed",
+      "label": "When was your learning strategy last reviewed?",
+      "type": "select",
+      "optional": false,
+      "shownWhen": {
+        "field": "hasStrategy",
+        "anyOf": ["yes", "in-development"]
+      },
+      "options": [
+        { "value": "within-6-months", "label": "Within the last 6 months" },
+        { "value": "6-12-months", "label": "6-12 months ago" },
+        { "value": "1-2-years", "label": "1-2 years ago" },
+        { "value": "2-plus-years", "label": "More than 2 years ago" },
+        { "value": "never", "label": "Never been reviewed" }
+      ]
+    },
+    {
+      "id": "name",
+      "label": "Name",
+      "type": "text",
+      "optional": true
+    },
+    {
+      "id": "company",
+      "label": "Company",
+      "type": "text",
+      "optional": true
+    },
+    {
+      "id": "email",
+      "label": "Email Address",
+      "type": "email",
+      "optional": true
+    },
+    {
+      "id": "consent",
+      "label": "I consent to receiving emails from WeLearn with personalized assessment feedback.",
+      "type": "checkbox",
+      "optional": true
+    }
+  ]
+}
