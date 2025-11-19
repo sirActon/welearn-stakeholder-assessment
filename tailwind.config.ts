@@ -21,16 +21,16 @@ const config: Config = {
     extend: {
       colors: {
         coral: {
-          50: "#fef8f3",
-          100: "#fdeadf",
-          200: "#f9d3b6",
-          300: "#f6b581",
-          400: "#f1994f",
-          500: "#eb9841", // brand color
-          600: "#d57f2f",
-          700: "#b16126",
-          800: "#914d22",
-          900: "#77401f",
+          50: "#fef5f2",
+          100: "#fde8e3",
+          200: "#fccec4",
+          300: "#f9a791",
+          400: "#f47a5c",
+          500: "#ee5732", // brand color - vivid orange
+          600: "#d64421",
+          700: "#b3361b",
+          800: "#922d19",
+          900: "#78281a",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

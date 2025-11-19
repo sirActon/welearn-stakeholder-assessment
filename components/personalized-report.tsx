@@ -82,7 +82,7 @@ export default function PersonalizedReport({
           <div className="flex justify-between items-center py-6">
             {/* Real logo — keep aspect ratio */}
             <img
-              src="/logo.jpg" // place your 721x227 white logo here
+              src="/logo.png" // place your 721x227 white logo here
               alt="WeLearn Logo"
               className="h-10 w-auto"
             />
@@ -468,7 +468,7 @@ export default function PersonalizedReport({
       <footer className="bg-white border-t border-slate-200 mt-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
           <div className="flex flex-col items-center gap-3">
-            <img src="/logo.jpg" alt="WeLearn Logo" className="h-7 w-auto" />
+            <img src="/logo.png" alt="WeLearn Logo" className="h-7 w-auto" />
             <div className="text-center text-slate-600">
               <p className="mb-1">
                 © 2024 WeLearn. Building Better Humans Through Learning.

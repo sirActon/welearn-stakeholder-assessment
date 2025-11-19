@@ -14,7 +14,7 @@ export function Header({ currentStep, totalSteps }: HeaderProps) {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Image
-              src="/logo.jpg"
+              src="/logo.png"
               alt="WeLearn Scorecard"
               width={300}
               height={100}

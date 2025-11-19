@@ -24,7 +24,7 @@ export default function ThankYou({ onBackToLanding }: ThankYouProps) {
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <Image
-                src="/logo.jpg"
+                src="/logo.png"
                 alt="WeLearn"
                 width={140}
                 height={36}

@@ -35,7 +35,7 @@ function PDFGenerator() {
     (typeof window !== "undefined" && window.location?.origin) ||
     process.env.NEXT_PUBLIC_SITE_URL ||
     "https://www.learningstrategyscorecard.com";
-  const logoSrc = `${siteUrl}/logo.jpg`;
+  const logoSrc = `${siteUrl}/logo.png`;
 
   useEffect(() => {
     try {

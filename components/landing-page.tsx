@@ -28,7 +28,7 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
               <div className="flex items-center">
                 <a href="https://welearnls.com/" aria-label="WeLearn Home">
                   <Image
-                    src="/logo.jpg"
+                    src="/logo.png"
                     alt="WeLearn Logo"
                     width={225}
                     height={75}

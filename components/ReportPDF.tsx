@@ -15,7 +15,7 @@ import {
 
 // --- Brand & tokens ---
 const BRAND = {
-  primary: "#eb9841", // WeLearn orange
+  primary: "#ee5732", // WeLearn vivid orange
   accent: "#ee4255", // Optional CTA accent
   bgSoft: "#f8fafc",
   border: "#e2e8f0",
@@ -28,7 +28,7 @@ const BRAND = {
 
 const LEVEL_COLORS: Record<string, string> = {
   Reactive: "#dc2626",
-  Operational: "#f97316",
+  Operational: "#ee5732",
   Strategic: "#2563eb",
   Transformational: "#16a34a",
 };
@@ -288,7 +288,7 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results, logoSrc 
         {/* HERO */}
         <View style={styles.hero}>
           <View style={styles.heroRow}>
-            <Image style={styles.logo} src={logoSrc || "/logo.jpg"} />
+            <Image style={styles.logo} src={logoSrc || "/logo.png"} />
             <Text style={styles.heroMeta}>Generated on {currentDate}</Text>
           </View>
           <View style={styles.titleBlock}>
