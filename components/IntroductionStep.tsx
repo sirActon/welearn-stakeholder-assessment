@@ -16,15 +16,22 @@ export function IntroductionStep() {
           Let&apos;s Get Started
         </h1>
         <p className="text-slate-600 text-lg mb-4">
-          The Learning Strategy Scorecard is designed to help L&D leaders
-          reflect on the strategic strength of their learning function. By
-          evaluating your approach across six core dimensions, you'll gain
-          clarity on your current state and where to focus your efforts for
-          maximum impact.
+          Thank you for taking a few minutes to complete this scorecard. The
+          purpose of this survey is to understand how you and your teams
+          experience the Learning &amp; Development (L&amp;D) function today.
+          Your feedback will help us benchmark current perceptions, identify
+          strengths to build on, and focus improvements where they will most
+          benefit the business.
+        </p>
+        <p className="text-slate-600 text-lg mb-4">
+          This scorecard is paired with a parallel self-assessment that the
+          L&amp;D organization is completing using the same six dimensions.
+          Together, these two perspectives—your outside-in view and
+          L&amp;D&apos;s inside-out view—help us see where we are aligned, where
+          gaps exist, and what actions will most improve L&amp;D&apos;s impact.
         </p>
         <p className="text-slate-500 text-sm italic">
-          Note: Please respond with your organization’s current learning strategy
-          context in mind (e.g., priorities, scale, and constraints).
+          Note: Please base your ratings on your direct experience.
         </p>
       </div>
 
@@ -41,58 +48,58 @@ export function IntroductionStep() {
                     1. Alignment to Business Strategy
                   </h3>
                   <p className="text-slate-600">
-                    Ensuring that learning initiatives directly support key
-                    organizational goals, priorities, and KPIs.
+                    How well L&D understands and supports your goals and
+                    priorities.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    2. Learning Governance
+                    2. Learning Governance & Decision-Making
                   </h3>
                   <p className="text-slate-600">
-                    Establishing decision-making structures and enterprise-level
-                    prioritization for learning investments and initiatives.
+                    How clear, coordinated, and effective learning priorities
+                    and decisions feel from your perspective.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    3. Technology and Ecosystem Integration
+                    3. Technology & Learning Ecosystem Experience
                   </h3>
                   <p className="text-slate-600">
-                    Connecting your learning platforms, tools, systems and data
-                    to create a seamless and scalable learning environment.
+                    How easy and connected the learning tools, platforms, and
+                    data are for you and your teams.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    4. Content and Experience Strategy
+                    4. Content & Learning Experience Quality
                   </h3>
                   <p className="text-slate-600">
-                    Designing engaging, inclusive, and strategic learning
-                    experiences aligned to learner needs and business outcomes.
+                    How relevant, practical, engaging, and current the learning
+                    experiences are.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    5. Measurement and Analytics
+                    5. Measurement, Impact & Communication
                   </h3>
                   <p className="text-slate-600">
-                    Capturing learning outcomes and using data to drive
-                    decisions to inform strategy and decision making.
+                    How well L&D demonstrates value, measures outcomes, and
+                    shares useful insights.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    6. Culture and Change Readiness
+                    6. Culture, Change & Organizational Readiness
                   </h3>
                   <p className="text-slate-600">
-                    Embedding learning into the culture ensuring people are
-                    equipped and motivated to grow and adapt.
+                    How effectively L&D supports growth, capability building,
+                    and change across the organization.
                   </p>
                 </div>
               </div>
@@ -165,41 +172,41 @@ export function IntroductionStep() {
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    30–74: Reactive
+                    30–74: Reactive Perception
                   </h3>
                   <p className="text-slate-600">
-                    Learning is reactive, compliance driven and lacks strategic
-                    integration.
+                    L&D seen as reactive, inconsistent, or disconnected from
+                    business priorities.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    75–104: Operational
+                    75–104: Operational Perception
                   </h3>
                   <p className="text-slate-600">
-                    Some alignment to business goals but L&D is still seen as a
-                    support function.
+                    L&D seen as reliable for core delivery, but not consistently
+                    strategic or proactive.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    105–129: Strategic
+                    105–129: Strategic Perception
                   </h3>
                   <p className="text-slate-600">
-                    L&D data informs business priorities, has leadership
-                    sponsorship and uses data to adapt.
+                    L&D seen as aligned, proactive, and influential in
+                    performance and change.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900">
-                    130–150: Transformational
+                    130–150: Transformational Perception
                   </h3>
                   <p className="text-slate-600">
-                    Fully embedded, innovative, and business-driving strategy.
-                    Learning is a growth engine.
+                    L&D seen as essential to business success, innovation, and
+                    competitive advantage.
                   </p>
                 </div>
               </div>

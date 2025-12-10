@@ -272,7 +272,11 @@ interface ReportPDFProps {
   logoSrc?: string;
 }
 
-const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results, logoSrc }) => {
+const ReportPDF: React.FC<ReportPDFProps> = ({
+  assessmentData,
+  results,
+  logoSrc,
+}) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -292,7 +296,9 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ assessmentData, results, logoSrc 
             <Text style={styles.heroMeta}>Generated on {currentDate}</Text>
           </View>
           <View style={styles.titleBlock}>
-            <Text style={styles.title}>Learning Strategy Scorecard Report</Text>
+            <Text style={styles.title}>
+              Stakeholder Perception Scorecard Report
+            </Text>
             <Text style={styles.subtitle}>
               A snapshot of your learning maturity with targeted recommendations
             </Text>

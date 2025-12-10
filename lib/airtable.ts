@@ -1,90 +1,83 @@
 import type { AssessmentData } from "@/components/types";
 
 // Mapping of question indexes to field IDs for each section
+// Updated for Stakeholders table (tblKgK6Iw1AwfYsA7)
 const FIELD_ID_MAPPING = {
   alignment: {
     questions: [
-      "fldfGoESvnORT6lSm",
-      "fldr0evRPWhnXlwkZ",
-      "fldpK0YT2Czn9CgdB",
-      "fldh2hke4QzP6BZvh",
-      "fldYSqbpZhsbgUeXW",
+      "fldtLfcP8yNtbbTl8", // Alignment_Q1_Understands_Goals
+      "fldtl6B3GE8XVJiSv", // Alignment_Q2_Supports_Performance
+      "flddq3oRctdymtrQE", // Alignment_Q3_Proactive_Engagement
+      "fldSvEhNrPX2oUkle", // Alignment_Q4_Adapts_Plans
+      "fldcxaoQVjA63ZRoQ", // Alignment_Q5_Strategic_Enabler
     ],
   },
   governance: {
     questions: [
-      "fldmDer24p3YQZOGQ",
-      "fldb0oi5B85eNhTu8",
-      "fldLY3nbcjipMncKm",
-      "fldoXEf1LUSYOUqLu",
-      "fldlvBEjb1HzigZsf",
+      "fldNRWlaQHaUtk7Zi", // Governance_Q1_Clear_Priorities
+      "fld2xx8AbYQqdRr1A", // Governance_Q2_Decision_Rights
+      "fldH3w467cLmntTyi", // Governance_Q3_Coordinated_Investments
+      "fldYxdL6jUa62ErFX", // Governance_Q4_Stakeholder_Involvement
+      "fldGKfxoCHcS15Sdp", // Governance_Q5_Efficient_Processes
     ],
   },
   technology: {
     questions: [
-      "fldRtmJTzo4RoThkF",
-      "fldNtLvIeL1pWGoLb",
-      "fldXbCiHNW2PX3KHM",
-      "fldIstntoIuaF0Ivy",
-      "fldrLFmAbG5QPZ8iJ",
+      "fldq3Dm59QGnr6hDM", // Technology_Q1_Easy_Platforms
+      "fldtwulTbfL1wYraN", // Technology_Q2_Connected_Ecosystem
+      "fldCeEDzLCKS1izgo", // Technology_Q3_Workflow_Friendly
+      "fldVzY9MkHyZkEm2r", // Technology_Q4_Meaningful_Data
+      "fldIVDETXNpV94KLM", // Technology_Q5_Modern_Approaches
     ],
   },
   content: {
     questions: [
-      "fldB3nH25QIZT7MoK",
-      "fldVC1LhMgZA0LPLP",
-      "fldLNsMXziWGF51Em",
-      "flduex9kx8Y5NI3ux",
-      "fldcmcELmymzWqRe0",
+      "fldv5r7s28BZcjXQL", // Content_Q1_Relevant
+      "fldeiy4m889fx7AZR", // Content_Q2_Engaging_Practical
+      "fldKmIiaKxXOZ5BeB", // Content_Q3_Current_Refreshed
+      "fldTjEcQfMIDcY0yG", // Content_Q4_Accessible_Inclusive
+      "fldvMlNnt7mXPnDxc", // Content_Q5_Format_Mix
     ],
   },
   measurement: {
     questions: [
-      "fldAEb4DqTqnQTBfS",
-      "fld4wXhLaDJCaqGTd",
-      "fldcADG1l28z2mGvK",
-      "fldJ5bzvd3VPunhKg",
-      "fldEsTyB0MrQeaVlU",
+      "fldoUOO3b8DlSqCwM", // Measurement_Q1_Beyond_Completions
+      "fldIRz3jL0NU7WIhU", // Measurement_Q2_Business_Outcomes
+      "fldhhmkXIkk1OzCGQ", // Measurement_Q3_Decision_Insights
+      "fldJnzrmrEMNgcbWk", // Measurement_Q4_Continuous_Improvement
+      "fldeuBJgIWw1dzjNV", // Measurement_Q5_Clear_Communication
     ],
   },
   culture: {
     questions: [
-      "fld0PCASZQQssZ5jZ",
-      "fldQEHlpj610sum8S",
-      "fldAibk1raCWW6GR0",
-      "fld3igmes4V5aGdup",
-      "fldXJUihfzHwcX5pw",
+      "fldzw81AzKf4SFRuT", // Culture_Q1_Continuous_Learning
+      "fld2Kz88WG8NQ9UOA", // Culture_Q2_Leader_Support
+      "fldv9nZrgm5y7XJT3", // Culture_Q3_Performance_Integration
+      "fldARqmdK34pIO2yq", // Culture_Q4_Employee_Encouraged
+      "fldk0izL1SjTMiIMX", // Culture_Q5_Change_Role
     ],
   },
 };
 
 // Fields for demographics and summary data
+// Updated for Stakeholders table (tblKgK6Iw1AwfYsA7)
 const FIELD_IDS = {
   demographics: {
-    name: "fldNptclsp9416arf", // Name
-    email: "fld7jcYxfQQCfhUWI", // Email
-    companyName: "fldNYrdLAcyINBI77", // Submitted Company Name
-    companySize: "fld2jQmNSZ6wfsBmT", // Company Size
-    industry: "fldiJW8GV8t5d7fux", // Industry
-    industryOther: "fldCTn0pFBHq261ad", // Other Industry
-    hasStrategy: "fldxX5uKu12czcM8f", // Do you currently have a formal learning strategy in place?
-    strategyLastReviewed: "fldNjndJ9m8Lduk3X", // If yes, when was your learning strategy last created or reviewed?
+    name: "fldw6h6hsl13Edvi1", // Name
+    email: "fldJZJCNAPUM987a3", // Email
+    companyName: "fld5bPOZCavkwSp90", // Company_Name
+    companySize: "fldTpwGhvZ1fOxnU9", // Company_Size
+    industry: "fldOaPixLCkAIv0WP", // Industry
+    // Note: industryOther, hasStrategy, strategyLastReviewed not in new table
   },
   summary: {
-    totalScore: "fldAlU8EvL3hV7C2c",
-    maturityLevel: "fldwR6IcwXFej9Pzm",
-    submissionId: "fldu0yi0EKKvAH2gr", // Unique submission ID for reference
-  },
-  actionPlanning: {
-    priorityAreas: "flddZORL2bGfzixG3",
-    quickWins: "fldsLXUc0JkfDOeYw",
-    strategicShifts: "fldsCY8G1g4LY6Mdo",
-    stakeholders: "fldTxUp9g9q6q1yDg",
-    successMetrics: "fldlda1IgYKZTeZdT",
+    totalScore: "fldFpbxv8kVRcb22q", // Total_Score
+    maturityLevel: "fldJGyC6pOSDDjNRS", // Perception_Level
+    submissionId: "fldT0BEv03eWWRRJx", // Submission_ID
   },
   links: {
-    // Linked Company field on Submissions table
-    company: "fldcHAx8IH10zvzpY",
+    // Linked Company field on Stakeholders table
+    company: "fldFn6uHI8jhJ6xSz",
   },
 };
 
@@ -98,7 +91,7 @@ export function calculateMaturityLevel(totalScore: number): string {
 export async function submitAssessmentToAirtable(
   assessmentData: AssessmentData
 ) {
-  const { demographics, sections, actionPlanning } = assessmentData;
+  const { demographics, sections } = assessmentData;
 
   // Calculate total score
   let totalScore = 0;
@@ -126,20 +119,7 @@ export async function submitAssessmentToAirtable(
     fieldsToSubmit[FIELD_IDS.demographics.industry] = demographics.industry;
   }
 
-  if (demographics.industryOther) {
-    fieldsToSubmit[FIELD_IDS.demographics.industryOther] =
-      demographics.industryOther;
-  }
-
-  if (demographics.hasStrategy) {
-    fieldsToSubmit[FIELD_IDS.demographics.hasStrategy] =
-      demographics.hasStrategy;
-  }
-
-  if (demographics.strategyLastReviewed) {
-    fieldsToSubmit[FIELD_IDS.demographics.strategyLastReviewed] =
-      demographics.strategyLastReviewed;
-  }
+  // Note: industryOther, hasStrategy, strategyLastReviewed fields removed from Stakeholders table
 
   // Process sections data
   Object.entries(sections).forEach(([sectionKey, sectionData]) => {
@@ -180,61 +160,7 @@ export async function submitAssessmentToAirtable(
     fieldsToSubmit[FIELD_IDS.links.company] = [assessmentData.companyRecordId];
   }
 
-  // Add action planning fields if they exist
-  // Handle multi-select fields - only add if there are non-empty values
-  if (
-    actionPlanning?.priorityAreas &&
-    actionPlanning?.priorityAreas.trim() !== "None"
-  ) {
-    const areas = actionPlanning?.priorityAreas
-      .split(",")
-      .map((s) => s.trim())
-      .filter((area) => area && area !== "None");
-
-    if (areas.length > 0) {
-      fieldsToSubmit[FIELD_IDS.actionPlanning.priorityAreas] = areas;
-    }
-  }
-
-  // Handle text fields - only add if non-empty
-  if (
-    actionPlanning?.quickWins &&
-    actionPlanning?.quickWins.trim() !== "None"
-  ) {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.quickWins] =
-      actionPlanning?.quickWins;
-  }
-
-  if (
-    actionPlanning?.strategicShifts &&
-    actionPlanning?.strategicShifts.trim() !== "None"
-  ) {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.strategicShifts] =
-      actionPlanning?.strategicShifts;
-  }
-
-  // Handle another multi-select field
-  if (
-    actionPlanning?.stakeholders &&
-    actionPlanning?.stakeholders.trim() !== "None"
-  ) {
-    const stakeholders = actionPlanning?.stakeholders
-      .split(",")
-      .map((s) => s.trim())
-      .filter((person) => person && person !== "None");
-
-    if (stakeholders.length > 0) {
-      fieldsToSubmit[FIELD_IDS.actionPlanning.stakeholders] = stakeholders;
-    }
-  }
-
-  if (
-    actionPlanning?.successMetrics &&
-    actionPlanning?.successMetrics.trim() !== "None"
-  ) {
-    fieldsToSubmit[FIELD_IDS.actionPlanning.successMetrics] =
-      actionPlanning?.successMetrics;
-  }
+  // Note: Action planning fields removed from Stakeholders table
 
   // Get environment variables
   const apiKey = process.env.AIRTABLE_API_KEY;
@@ -268,12 +194,15 @@ export async function submitAssessmentToAirtable(
     let response: Response | undefined;
     let retries = 2;
     let success = false;
-    
+
     while (retries >= 0 && !success) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), requestTimeoutMs);
-        
+        const timeoutId = setTimeout(
+          () => controller.abort(),
+          requestTimeoutMs
+        );
+
         response = await fetch(`${apiUrl}/${baseId}/${tableId}`, {
           method: "POST",
           headers: {
@@ -286,21 +215,25 @@ export async function submitAssessmentToAirtable(
           }),
           signal: controller.signal,
         });
-        
+
         clearTimeout(timeoutId);
         success = true;
       } catch (err) {
         if (retries === 0) throw err;
-        console.log(`Airtable request attempt failed, retrying... (${retries} attempts left)`);
+        console.log(
+          `Airtable request attempt failed, retrying... (${retries} attempts left)`
+        );
         retries--;
         // Wait 1 second before retrying
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
-    
+
     // Make sure we have a response before proceeding
     if (!response) {
-      throw new Error("Failed to get a response from Airtable after multiple attempts");
+      throw new Error(
+        "Failed to get a response from Airtable after multiple attempts"
+      );
     }
 
     if (!response.ok) {

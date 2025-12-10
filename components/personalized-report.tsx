@@ -26,11 +26,11 @@ interface PersonalizedReportProps {
 
 const sectionNames = {
   alignment: "Alignment to Business Strategy",
-  governance: "Learning Governance",
-  technology: "Technology and Ecosystem Integration",
-  content: "Content and Experience Strategy",
-  measurement: "Measurement and Analytics",
-  culture: "Culture and Change Readiness",
+  governance: "Learning Governance & Decision-Making",
+  technology: "Technology & Learning Ecosystem Experience",
+  content: "Content & Learning Experience Quality",
+  measurement: "Measurement, Impact & Communication",
+  culture: "Culture, Change & Organizational Readiness",
 } as const;
 
 export default function PersonalizedReport({
@@ -136,10 +136,10 @@ export default function PersonalizedReport({
         <section className="mb-12">
           <div className="text-center">
             <h1 className="text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
-              Learning Strategy Scorecard Report
+              Stakeholder Perception Scorecard Report
             </h1>
             <p className="mt-3 text-slate-600">
-              A snapshot of your learning maturity with targeted recommendations
+              A snapshot of stakeholder perception with targeted insights
             </p>
           </div>
 
@@ -203,10 +203,11 @@ export default function PersonalizedReport({
                 Key Insight
               </h4>
               <p className="text-slate-700 leading-relaxed">
-                Your organization shows the strongest performance in areas where
-                you’ve invested time and resources, while opportunities exist to
-                strengthen alignment between learning initiatives and business
-                outcomes.
+                Your feedback highlights how L&D is perceived across key
+                dimensions. Areas with higher scores reflect where L&D is
+                meeting stakeholder expectations, while lower scores indicate
+                opportunities to strengthen L&D's impact and alignment with
+                business needs.
               </p>
             </div>
           </CardContent>
@@ -444,8 +445,15 @@ export default function PersonalizedReport({
                 learning strategy and build better humans through learning.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-4 text-base lg:text-lg font-bold rounded-2xl shadow-lg shadow-coral-200 hover:shadow-xl transition-all">
-                  <a href="https://calendly.com/seans-oxq/ss" target="_blank" rel="noopener noreferrer">
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white px-8 py-4 text-base lg:text-lg font-bold rounded-2xl shadow-lg shadow-coral-200 hover:shadow-xl transition-all"
+                >
+                  <a
+                    href="https://calendly.com/seans-oxq/ss"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Schedule a Consultation
                   </a>
                 </Button>
@@ -454,7 +462,11 @@ export default function PersonalizedReport({
                   variant="outline"
                   className="text-coral-600 border-white hover:bg-white hover:text-slate-900 px-8 py-4 text-base lg:text-lg font-bold rounded-2xl"
                 >
-                  <a href="http://www.welearnls.com/" target="_blank" rel="noopener noreferrer">
+                  <a
+                    href="http://www.welearnls.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Learn More About WeLearn
                   </a>
                 </Button>

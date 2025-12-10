@@ -3,81 +3,81 @@ export const sections = [
     key: "alignment",
     title: "Alignment to Business Strategy",
     description:
-      "Ensuring that learning initiatives directly support key organizational goals, priorities, and KPIs.",
+      "How well L&D understands and supports your goals and priorities.",
     questions: [
-      "Does your learning strategy directly support key business goals?",
-      "Are learning initiatives tied to performance metrics and KPIs?",
-      "Do you have regular conversations with executive stakeholders?",
-      "Is your learning strategy updated in response to changes in business direction?",
-      "Do business leaders see L&D as a strategic enabler?",
+      "L&D understands our business goals and priorities.",
+      "Learning initiatives we receive clearly support our performance and outcomes.",
+      "L&D proactively engages us to shape learning priorities—not just delivers what's requested.",
+      "L&D adapts learning plans when business needs or strategy shift.",
+      "L&D is viewed in our area as a strategic enabler (not just a service provider).",
     ],
   },
   {
     key: "governance",
-    title: "Learning Governance",
+    title: "Learning Governance & Decision-Making",
     description:
-      "Establishing decision-making structures and enterprise-level prioritization for learning investments and initiatives.",
+      "How clear, coordinated, and effective learning priorities and decisions feel from your perspective.",
     questions: [
-      "Is there a cross-functional governance body overseeing learning strategy?",
-      "Are there clear decision rights and accountability structures?",
-      "Are learning initiatives prioritized at an enterprise level?",
-      "Are governance practices reviewed and updated regularly?",
-      "Are stakeholders from across the organization involved in governance?",
+      "There is a clear way to set learning priorities across the enterprise.",
+      "Decision rights are clear (who approves, funds, and owns learning initiatives).",
+      "Learning investments feel coordinated—not duplicative across teams or functions.",
+      "We are appropriately involved in decisions that impact our function's learning needs.",
+      "Governance processes help us move faster and smarter, not slower.",
     ],
   },
   {
     key: "technology",
-    title: "Technology and Ecosystem Integration",
+    title: "Technology & Learning Ecosystem Experience",
     description:
-      "Connecting your learning platforms, tools, systems and data to create a seamless and scalable learning environment.",
+      "How easy and connected the learning tools, platforms, and data are for you and your teams.",
     questions: [
-      "Are your platforms integrated (LMS, LXP, content library, analytics)?",
-      "Is learner data used to drive personalization?",
-      "Do you have a strategy for AI and automation in learning?",
-      "Are learning technologies user-friendly and widely adopted?",
-      "Is there a roadmap for evolving your learning tech stack?",
+      "Learning platforms are easy to use and navigate.",
+      "The learning ecosystem feels connected (content, platforms, data work together).",
+      "Learning tools fit into how our teams work (workflow-friendly, not disruptive).",
+      "We can see meaningful data about learning participation and impact.",
+      "L&D is exploring modern approaches (AI, automation, personalization).",
     ],
   },
   {
     key: "content",
-    title: "Content and Experience Strategy",
+    title: "Content & Learning Experience Quality",
     description:
-      "Designing engaging, inclusive, and strategic learning experiences aligned to learner needs and business outcomes.",
+      "How relevant, practical, engaging, and current the learning experiences are.",
     questions: [
-      "Do you have a defined content strategy and taxonomy?",
-      "Is content regularly curated and updated?",
-      "Is learning accessible, inclusive, and engaging?",
-      "Is learning content aligned to critical skills and roles?",
-      "Is there a blend of modalities (video, social, interactive, etc.)?",
+      "Learning content is relevant to our roles, skills, and business needs.",
+      "Learning experiences are engaging and practical—not 'check the box' exercises.",
+      "Content stays current and is refreshed regularly.",
+      "Learning is accessible and inclusive for different audiences and needs.",
+      "There's an effective mix of formats (short resources, programs, tools, social learning, etc.).",
     ],
   },
   {
     key: "measurement",
-    title: "Measurement and Analytics",
+    title: "Measurement, Impact & Communication",
     description:
-      "Capturing learning outcomes and using data to drive decisions to inform strategy and decision making.",
+      "How well L&D demonstrates value, measures outcomes, and shares useful insights.",
     questions: [
-      "Do you track more than just completions and satisfaction?",
-      "Are learning outcomes tied to business impact?",
-      "Do you have dashboards that inform strategic decisions?",
-      "Is data used to continuously improve programs?",
-      "Are learning metrics communicated clearly to leadership?",
+      "L&D measures success in ways that go beyond completions or satisfaction scores.",
+      "We can see how learning contributes to performance or business outcomes.",
+      "L&D shares insights that help us make decisions (not just reports).",
+      "Learning data is used to improve programs over time.",
+      "L&D communicates impact clearly and consistently to leadership.",
     ],
   },
   {
     key: "culture",
-    title: "Culture and Change Readiness",
+    title: "Culture, Change & Organizational Readiness",
     description:
-      "Embedding learning into the culture ensuring people are equipped and motivated to grow and adapt.",
+      "How effectively L&D supports growth, capability building, and change across the organization.",
     questions: [
-      "Is learning embedded in the company culture?",
-      "Are leaders modeling continuous learning?",
-      "Is learning connected to performance and growth conversations?",
-      "Do employees feel supported and encouraged to learn?",
-      "Is learning a component of change initiatives and transformation?",
+      "L&D helps build a culture of continuous learning in our organization.",
+      "Leaders in our area are supported to model learning and development.",
+      "Learning is integrated into performance, growth, and talent conversations.",
+      "Employees feel encouraged and supported to learn.",
+      "L&D plays an effective role in change initiatives and transformation.",
     ],
   },
-] ;
+];
 
 export const likertOptions = [
   {
@@ -109,4 +109,4 @@ export const likertOptions = [
     description:
       "Practices are embedded, optimized, and inform ongoing strategic evolution.",
   },
-] ;
+];

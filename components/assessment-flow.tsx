@@ -5,7 +5,12 @@ import React, { useReducer, useCallback, useState, useEffect } from "react";
 import { shouldShowHeader, isEmbedded } from "@/lib/header-utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import type { AssessmentData, Demographics, ActionPlanning, SectionResponse } from "./types";
+import type {
+  AssessmentData,
+  Demographics,
+  ActionPlanning,
+  SectionResponse,
+} from "./types";
 import { DemographicsStep } from "./DemographicsStep";
 import { SectionStep } from "./SectionStep";
 // Action planning step removed
@@ -15,7 +20,6 @@ import { ProgressBar } from "./ProgressBar";
 import { submitAssessment } from "@/lib/client-api";
 import { generateSubmissionId } from "@/lib/id-generator";
 import { sections, likertOptions } from "@/lib/assessment-data";
-
 
 interface AssessmentFlowProps {
   onComplete: (data: AssessmentData) => void;
@@ -40,16 +44,16 @@ type Action =
   | { type: "setStep"; step: number };
 
 const initialState: State = {
-  demographics: { 
-    companySize: "", 
-    industry: "", 
+  demographics: {
+    companySize: "",
+    industry: "",
     industryOther: "",
-    hasStrategy: "", 
-    strategyLastReviewed: "", 
-    name: "", 
+    hasStrategy: "",
+    strategyLastReviewed: "",
+    name: "",
     company: "",
-    email: "", 
-    consent: false 
+    email: "",
+    consent: false,
   },
   sections: {},
   // actionPlanning removed
@@ -87,26 +91,32 @@ function reducer(state: State, action: Action): State {
 
 // sections and likertOptions are now imported from '@/lib/assessment-data'
 
-export default function AssessmentFlow({ onComplete, showHeader = false }: AssessmentFlowProps) {
+export default function AssessmentFlow({
+  onComplete,
+  showHeader = false,
+}: AssessmentFlowProps) {
   // Check URL parameters for header visibility using shared utility
   const [headerVisible, setHeaderVisible] = useState<boolean>(showHeader);
   const embedded = isEmbedded();
-  
+
   // Effect to check for URL parameters on client-side
   useEffect(() => {
     // Use the shared header visibility utility
     const showHeaderFromUrl = shouldShowHeader();
-    
+
     // Update header visibility based on URL parameter or prop
     setHeaderVisible(!isEmbedded() && (showHeaderFromUrl || showHeader));
   }, [showHeader]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const totalSteps = 1 + sections.length + 1; // introduction + each dimension + demographics (action planning removed)
+  // Demographics step is hidden for now - will be re-enabled when confirmed
+  const showDemographics = false;
+  const totalSteps = 1 + sections.length + (showDemographics ? 1 : 0); // introduction + each dimension + optional demographics
 
   // Read optional company record ID from URL (?company=<recordId>)
-  const companyRecordId = typeof window !== 'undefined'
-    ? new URLSearchParams(window.location.search).get('company') || undefined
-    : undefined;
+  const companyRecordId =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("company") || undefined
+      : undefined;
 
   const goNext = useCallback(() => {
     if (state.currentStep < totalSteps - 1) {
@@ -128,18 +138,23 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       return true;
     }
     // Action Planning step has been removed
-    // Demographics step is now at the end - ALL fields are optional
-    if (state.currentStep === totalSteps - 1) {
+    // Demographics step is now at the end - ALL fields are optional (when enabled)
+    if (showDemographics && state.currentStep === totalSteps - 1) {
       // Everything is optional except for the consent validation
-      
+
       // If consent is checked, then name and email are required
-      const consentValidation = !state.demographics.consent || 
-                               (state.demographics.consent && !!state.demographics.name && !!state.demographics.email);
-      
+      const consentValidation =
+        !state.demographics.consent ||
+        (state.demographics.consent &&
+          !!state.demographics.name &&
+          !!state.demographics.email);
+
       // If industry is "Other", then industryOther should be provided
-      const industryValidation = state.demographics.industry !== "Other" || 
-                               (state.demographics.industry === "Other" && !!state.demographics.industryOther);
-      
+      const industryValidation =
+        state.demographics.industry !== "Other" ||
+        (state.demographics.industry === "Other" &&
+          !!state.demographics.industryOther);
+
       return consentValidation && industryValidation;
     }
     if (state.currentStep > 0 && state.currentStep <= sections.length) {
@@ -156,16 +171,16 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  
+
   const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     setSubmitError(null);
-    
+
     try {
       // Prepare the data
       // Generate a submission ID
       const submissionId = generateSubmissionId();
-      
+
       const processedData: AssessmentData = {
         demographics: state.demographics,
         sections: Object.fromEntries(
@@ -181,10 +196,10 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
         // Include company linkage if provided via URL
         ...(companyRecordId ? { companyRecordId } : {}),
       };
-      
+
       // Submit to Airtable database
       const result = await submitAssessment(processedData);
-      
+
       if (result.success) {
         toast.success("Assessment submitted successfully!");
         // Pass the data to the parent component
@@ -192,7 +207,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       } else {
         // Log detailed error information for debugging
         console.error("Submission error details:", result);
-        
+
         setSubmitError(result.error || "Failed to submit assessment");
         toast.error(result.message || "An error occurred");
       }
@@ -215,9 +230,7 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
       )}
 
       <main className="max-w-4xl mx-auto px-6 lg:px-8 py-12">
-        {state.currentStep === 0 && (
-          <IntroductionStep />
-        )}
+        {state.currentStep === 0 && <IntroductionStep />}
 
         {state.currentStep > 0 && state.currentStep <= sections.length && (
           <SectionStep
@@ -239,8 +252,8 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
           />
         )}
 
-        {/* Demographics step now comes at the end */}
-        {state.currentStep === totalSteps - 1 && (
+        {/* Demographics step now comes at the end (when enabled) */}
+        {showDemographics && state.currentStep === totalSteps - 1 && (
           <DemographicsStep
             demographics={state.demographics}
             onChange={(field, value) =>
@@ -281,9 +294,25 @@ export default function AssessmentFlow({ onComplete, showHeader = false }: Asses
               >
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Submitting...
                   </>

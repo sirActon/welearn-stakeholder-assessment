@@ -1,155 +1,155 @@
-// Recommendations organized by section and score ranges
+// Recommendations organized by section and score ranges (stakeholder perception focus)
 export const sectionRecommendations = {
   "Alignment to Business Strategy": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Learning is not consistently linked to business priorities. Meet with senior leaders to identify 2–3 goals learning should support; document the linkage and define success metrics."
+      min: 6,
+      max: 14,
+      text: "Stakeholders perceive L&D as disconnected from business priorities. L&D should increase engagement with business leaders to understand goals and demonstrate how learning supports outcomes.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "Some alignment exists but is informal. Create a lightweight intake + prioritization process tied to KPIs and review alignment quarterly."
+      min: 15,
+      max: 22,
+      text: "Some alignment is recognized but inconsistent. L&D should formalize stakeholder engagement and communicate how initiatives tie to business KPIs.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Strong alignment. Revisit goals each quarter and add outcome measures (productivity, retention, speed-to-competency)."
-    }
+      min: 23,
+      max: 30,
+      text: "Strong perception of alignment. Continue reinforcing connections between learning and business outcomes through regular communication.",
+    },
   ],
-  "Learning Governance": [
+  "Learning Governance & Decision-Making": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Introduce a basic governance model: clarify roles, decision rights, and approval steps; create a single backlog and cadence for prioritization."
+      min: 6,
+      max: 14,
+      text: "Stakeholders find governance unclear or cumbersome. L&D should clarify decision rights, simplify processes, and improve transparency around priorities.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "Tighten consistency. Publish a RACI, streamline approvals, and add a monthly portfolio review with cross-functional stakeholders."
+      min: 15,
+      max: 22,
+      text: "Governance is recognized but could be more inclusive. L&D should involve stakeholders more consistently in prioritization decisions.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Governance is working. Guard against bottlenecks—run periodic retros to simplify steps and keep space for experimentation."
-    }
+      min: 23,
+      max: 30,
+      text: "Governance is perceived as effective. Continue streamlining and ensure stakeholders feel appropriately involved in decisions.",
+    },
   ],
-  "Technology & Ecosystem Integration": [
+  "Technology & Learning Ecosystem Experience": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Stack appears fragmented or underused. Run a tool audit, remove redundancies, and define 2–3 critical integrations (LMS/LXP ↔ HRIS/BI)."
+      min: 6,
+      max: 14,
+      text: "Stakeholders find learning tools difficult or disconnected. L&D should prioritize usability improvements and better integration into workflows.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "Tools are in place but not fully connected. Prioritize interoperability, single sign-on, skill-tagging, and consistent data flows."
+      min: 15,
+      max: 22,
+      text: "Tools are functional but not seamless. L&D should focus on improving the connected experience and making data more accessible.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Well-integrated ecosystem. Pilot AI-driven recommendations, xAPI data streams, and analytics to personalize experiences."
-    }
+      min: 23,
+      max: 30,
+      text: "Strong technology perception. Continue exploring modern approaches and ensure tools remain workflow-friendly.",
+    },
   ],
-  "Content & Experience Strategy": [
+  "Content & Learning Experience Quality": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Quality and relevance vary. Establish design standards, accessibility checks, and map content to roles/skills and moments of need."
+      min: 6,
+      max: 14,
+      text: "Stakeholders find content lacking relevance or engagement. L&D should gather feedback on content needs and refresh outdated materials.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "Good base, but increase engagement and personalization. Add scenarios, practice/feedback loops, and curated pathways."
+      min: 15,
+      max: 22,
+      text: "Content is adequate but could be more practical. L&D should focus on role-relevance and engaging formats.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Advanced strategy. Test adaptive learning, micro-credentials, and cohort/social layers to deepen impact."
-    }
+      min: 23,
+      max: 30,
+      text: "Content is perceived as high quality. Continue curating and refreshing to maintain relevance and engagement.",
+    },
   ],
-  "Measurement & Analytics": [
+  "Measurement, Impact & Communication": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Move beyond completions. Define measurable objectives and track application, behavior change, and business outcomes."
+      min: 6,
+      max: 14,
+      text: "Stakeholders don't see clear evidence of L&D impact. L&D should improve how outcomes are measured and communicated to leadership.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "You collect data—now use it. Build stakeholder dashboards that connect learning signals to performance KPIs."
+      min: 15,
+      max: 22,
+      text: "Some impact visibility exists but is inconsistent. L&D should share insights more regularly and connect learning to business results.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Strong analytics. Explore predictive insights and data storytelling to influence decisions and funding."
-    }
+      min: 23,
+      max: 30,
+      text: "Strong perception of impact communication. Continue demonstrating value through clear, consistent reporting.",
+    },
   ],
-  "Culture & Change Readiness": [
+  "Culture, Change & Organizational Readiness": [
     {
-      min: 6, 
-      max: 14, 
-      text: "Learning isn't embedded yet. Secure leadership signals (role-modeling, recognition) and create visible campaigns for participation."
+      min: 6,
+      max: 14,
+      text: "Stakeholders don't see L&D as embedded in culture or change. L&D should partner more visibly on transformation initiatives and support leaders as learning champions.",
     },
     {
-      min: 15, 
-      max: 22, 
-      text: "Supportive culture but inconsistent. Tie learning to performance conversations and highlight success stories regularly."
+      min: 15,
+      max: 22,
+      text: "Some cultural support is recognized but uneven. L&D should strengthen integration with performance conversations and change initiatives.",
     },
     {
-      min: 23, 
-      max: 30, 
-      text: "Strong culture. Scale mentoring/peer learning, managers-as-coaches, and link skills growth to internal mobility."
-    }
-  ]
+      min: 23,
+      max: 30,
+      text: "Strong perception of cultural integration. Continue supporting leaders and embedding learning in growth conversations.",
+    },
+  ],
 };
 
 // Map section keys from the assessment to the recommendation keys
 export const sectionKeyToRecommendationKey = {
-  "alignment": "Alignment to Business Strategy",
-  "governance": "Learning Governance",
-  "technology": "Technology & Ecosystem Integration",
-  "content": "Content & Experience Strategy", 
-  "measurement": "Measurement & Analytics",
-  "culture": "Culture & Change Readiness"
+  alignment: "Alignment to Business Strategy",
+  governance: "Learning Governance & Decision-Making",
+  technology: "Technology & Learning Ecosystem Experience",
+  content: "Content & Learning Experience Quality",
+  measurement: "Measurement, Impact & Communication",
+  culture: "Culture, Change & Organizational Readiness",
 };
 
-// Legacy maturity level recommendations for backwards compatibility
+// Maturity level recommendations based on stakeholder perception
 export const maturityLevelRecommendations = {
-  "Reactive": {
-    title: "Building Your Foundation",
+  Reactive: {
+    title: "Addressing Perception Gaps",
     items: [
-      "Develop a formal learning strategy document",
-      "Secure leadership buy-in and support",
-      "Establish basic learning processes and workflows",
-      "Begin tracking fundamental learning metrics",
+      "Increase visibility of L&D's connection to business priorities",
+      "Improve communication about learning initiatives and their purpose",
+      "Gather more stakeholder input on learning needs and priorities",
+      "Demonstrate quick wins that show L&D responsiveness",
     ],
   },
-  "Operational": {
-    title: "Expanding Your Capabilities",
+  Operational: {
+    title: "Strengthening Stakeholder Confidence",
     items: [
-      "Align learning initiatives with business objectives",
-      "Implement systematic measurement and evaluation",
-      "Develop a more diverse learning content portfolio",
-      "Strengthen manager engagement in learning",
+      "Formalize stakeholder engagement in learning prioritization",
+      "Improve how L&D impact is measured and communicated",
+      "Ensure learning content stays relevant and practical",
+      "Involve stakeholders more consistently in governance decisions",
     ],
   },
-  "Strategic": {
-    title: "Driving Innovation",
+  Strategic: {
+    title: "Deepening Strategic Partnership",
     items: [
-      "Experiment with emerging learning technologies",
-      "Develop predictive analytics capabilities",
-      "Create personalized learning experiences",
-      "Build a culture of continuous learning",
+      "Position L&D as a proactive partner in business planning",
+      "Share insights that help stakeholders make better decisions",
+      "Continue innovating with technology and personalization",
+      "Strengthen L&D's role in change and transformation initiatives",
     ],
   },
-  "Transformational": {
-    title: "Leading the Way",
+  Transformational: {
+    title: "Sustaining Excellence",
     items: [
-      "Share best practices with the industry",
-      "Mentor other organizations in their learning journey",
-      "Continue pushing the boundaries of learning innovation",
-      "Maintain your competitive advantage through learning",
+      "Maintain strong stakeholder relationships and communication",
+      "Continue demonstrating clear business impact",
+      "Lead innovation in learning approaches and technology",
+      "Serve as a model for L&D excellence across the organization",
     ],
   },
 };
@@ -160,16 +160,25 @@ export const maturityLevelRecommendations = {
  * @param sectionScore The score achieved in that section
  * @returns The relevant recommendation text for that section score
  */
-export function getSectionRecommendation(sectionKey: string, sectionScore: number): string {
-  const recommendationKey = sectionKeyToRecommendationKey[sectionKey as keyof typeof sectionKeyToRecommendationKey];
+export function getSectionRecommendation(
+  sectionKey: string,
+  sectionScore: number
+): string {
+  const recommendationKey =
+    sectionKeyToRecommendationKey[
+      sectionKey as keyof typeof sectionKeyToRecommendationKey
+    ];
   if (!recommendationKey) return "";
-  
-  const recommendations = sectionRecommendations[recommendationKey as keyof typeof sectionRecommendations];
+
+  const recommendations =
+    sectionRecommendations[
+      recommendationKey as keyof typeof sectionRecommendations
+    ];
   if (!recommendations) return "";
 
   // Find the applicable recommendation based on score range
   const recommendation = recommendations.find(
-    rec => sectionScore >= rec.min && sectionScore <= rec.max
+    (rec) => sectionScore >= rec.min && sectionScore <= rec.max
   );
 
   return recommendation?.text || "";

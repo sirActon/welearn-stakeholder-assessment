@@ -67,14 +67,14 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
             </div>*/}
 
             <h1 className="text-6xl lg:text-7xl font-medium text-slate-900 mb-8 tracking-tight leading-tight">
-              Learning Strategy
+              Stakeholder Perception
               <span className="block text-coral-500">Scorecard</span>
             </h1>
 
             <p className="text-xl lg:text-2xl text-slate-600 mb-16 leading-relaxed max-w-3xl mx-auto">
-              Assess the maturity of your organization's learning strategy and
-              receive a personalized report with actionable insights to guide
-              your next steps.
+              Share your perspective on how Learning & Development supports your
+              business. Your feedback helps benchmark perceptions and identify
+              opportunities to strengthen L&D's impact.
             </p>
 
             {!isEmbedded ? (
@@ -90,8 +90,8 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                       Complete Assessment
                     </h3>
                     <p className="text-slate-600 leading-relaxed">
-                      Answer questions across 6 key areas of learning strategy
-                      maturity
+                      Rate L&D across 6 key dimensions based on your direct
+                      experience
                     </p>
                   </div>
 
@@ -105,8 +105,7 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                       Get Your Score
                     </h3>
                     <p className="text-slate-600 leading-relaxed">
-                      Receive your maturity level and detailed performance
-                      breakdown
+                      See how your perception compares across each dimension
                     </p>
                   </div>
 
@@ -117,11 +116,10 @@ export default function LandingPage({ onStartAssessment }: LandingPageProps) {
                       </span>
                     </div>
                     <h3 className="text-xl font-bold text-slate-900 mb-4">
-                      Take Action
+                      Drive Improvement
                     </h3>
                     <p className="text-slate-600 leading-relaxed">
-                      Use personalized insights to advance your learning
-                      strategy
+                      Help L&D focus on what matters most to the business
                     </p>
                   </div>
                 </div>

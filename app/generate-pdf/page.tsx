@@ -44,7 +44,7 @@ function PDFGenerator() {
         setError("No data provided for PDF generation");
         return;
       }
-      
+
       const decoded = JSON.parse(decodeURIComponent(data));
       setParsedData(decoded);
     } catch (err) {
@@ -82,14 +82,19 @@ function PDFGenerator() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-        <h1 className="text-2xl font-bold mb-4">Learning Strategy Scorecard PDF</h1>
+        <h1 className="text-2xl font-bold mb-4">
+          Stakeholder Perception Scorecard PDF
+        </h1>
         <p className="text-slate-700 mb-6">
           Your PDF is ready to download. Click the button below to download your
-          personalized Learning Strategy Scorecard report.
+          personalized Stakeholder Perception Scorecard report.
         </p>
-        
+
         <div className="flex justify-center">
-          <Button asChild className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg">
+          <Button
+            asChild
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
+          >
             <PDFDownloadLink
               document={
                 <ReportPDF
@@ -107,9 +112,9 @@ function PDFGenerator() {
             </PDFDownloadLink>
           </Button>
         </div>
-        
+
         <div className="mt-4 text-center">
-          <button 
+          <button
             onClick={() => window.close()}
             className="text-sm text-slate-500 hover:text-slate-700"
           >
