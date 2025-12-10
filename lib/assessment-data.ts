@@ -6,10 +6,10 @@ export const sections = [
       "How well L&D understands and supports your goals and priorities.",
     questions: [
       "L&D understands our business goals and priorities.",
-      "Learning initiatives we receive clearly support our performance and outcomes.",
-      "L&D proactively engages us to shape learning priorities—not just delivers what's requested.",
+      "Learning initiatives we receive clearly support our performance goals and KPIs.",
+      "L&D proactively engages us to shape learning priorities—not just react to requests.",
       "L&D adapts learning plans when business needs or strategy shift.",
-      "L&D is viewed in our area as a strategic enabler (not just a service provider).",
+      "L&D is viewed in our area as a strategic enabler (not just a training provider).",
     ],
   },
   {
@@ -20,8 +20,8 @@ export const sections = [
     questions: [
       "There is a clear way to set learning priorities across the enterprise.",
       "Decision rights are clear (who approves, funds, and owns learning initiatives).",
-      "Learning investments feel coordinated—not duplicative across teams or functions.",
-      "We are appropriately involved in decisions that impact our function's learning needs.",
+      "Learning investments feel coordinated—not duplicative across teams/functions.",
+      "We are appropriately involved in decisions that impact our functions.",
       "Governance processes help us move faster and smarter, not slower.",
     ],
   },
@@ -31,11 +31,11 @@ export const sections = [
     description:
       "How easy and connected the learning tools, platforms, and data are for you and your teams.",
     questions: [
-      "Learning platforms are easy to use and navigate.",
-      "The learning ecosystem feels connected (content, platforms, data work together).",
-      "Learning tools fit into how our teams work (workflow-friendly, not disruptive).",
-      "We can see meaningful data about learning participation and impact.",
-      "L&D is exploring modern approaches (AI, automation, personalization).",
+      "Learning platforms are easy to access and use.",
+      "The learning ecosystem feels connected (content, platforms, data, support).",
+      "Learning tools fit into how our teams work (workflow-friendly).",
+      "We can see meaningful data about learning participation and impact for our teams.",
+      "L&D is exploring modern approaches (AI, automation, personalization) in useful ways.",
     ],
   },
   {
@@ -44,9 +44,9 @@ export const sections = [
     description:
       "How relevant, practical, engaging, and current the learning experiences are.",
     questions: [
-      "Learning content is relevant to our roles, skills, and business needs.",
-      "Learning experiences are engaging and practical—not 'check the box' exercises.",
-      "Content stays current and is refreshed regularly.",
+      "Learning content is relevant to our roles, skills, and business challenges.",
+      "Learning experiences are engaging and practical—not 'check the box.'",
+      "Content stays current and is refreshed when needed.",
       "Learning is accessible and inclusive for different audiences and needs.",
       "There's an effective mix of formats (short resources, programs, tools, social learning, etc.).",
     ],
@@ -57,7 +57,7 @@ export const sections = [
     description:
       "How well L&D demonstrates value, measures outcomes, and shares useful insights.",
     questions: [
-      "L&D measures success in ways that go beyond completions or satisfaction scores.",
+      "L&D measures success in ways that go beyond completions or satisfaction.",
       "We can see how learning contributes to performance or business outcomes.",
       "L&D shares insights that help us make decisions (not just reports).",
       "Learning data is used to improve programs over time.",
@@ -73,8 +73,8 @@ export const sections = [
       "L&D helps build a culture of continuous learning in our organization.",
       "Leaders in our area are supported to model learning and development.",
       "Learning is integrated into performance, growth, and talent conversations.",
-      "Employees feel encouraged and supported to learn.",
-      "L&D plays an effective role in change initiatives and transformation.",
+      "Employees feel encouraged and supported to learn and grow.",
+      "L&D plays an effective role in change initiatives and transformation work.",
     ],
   },
 ];
